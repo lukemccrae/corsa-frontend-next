@@ -1,14 +1,12 @@
 "use client";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import HandleAuth from "../pages/auth";
-import { BrowserRouter as Router, useFetcher } from "react-router-dom";
+import { StravaAuth } from "../pages/StravaAuth.swr";
+import { Profile } from "./profile";
 
 const StravaAuthorization = () => {
   const redirectToStrava = () => {
     // Define the Strava authorization URL
     const stravaAuthorizeUrl =
-      "https://www.strava.com/oauth/authorize?client_id=69281&redirect_uri=https://5af1-190-129-181-170.ngrok-free.app&response_type=code&scope=activity:read";
+      "https://www.strava.com/oauth/authorize?client_id=69281&redirect_uri=https://8882-190-129-180-114.ngrok-free.app&response_type=code&scope=activity:read";
 
     // Perform the redirect
     window.location.href = stravaAuthorizeUrl;
@@ -19,13 +17,18 @@ const StravaAuthorization = () => {
 
   return (
     <div>
-      <button onClick={redirectToStrava}>auth with Strava</button>
       {new URLSearchParams(window.location.href).get("code") ? (
-        <HandleAuth
-          data={[]}
+        <StravaAuth
           code={new URLSearchParams(window.location.href).get("code")}
-        ></HandleAuth>
+        ></StravaAuth>
       ) : null}
+      <div>
+        {localStorage.getItem("access_token") ? (
+          <Profile user={localStorage.getItem("access_token")}></Profile>
+        ) : (
+          <button onClick={redirectToStrava}>auth with Strava</button>
+        )}
+      </div>
     </div>
   );
 };
