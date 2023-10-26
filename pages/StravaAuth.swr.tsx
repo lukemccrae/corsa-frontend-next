@@ -24,7 +24,7 @@ export const StravaAuth = (props: { code: any }) => {
 
   if (error) return <div>failed to load</div>;
   if (isLoading) return <div>loading...</div>;
-  return <div>hello {JSON.stringify(data)}</div>;
+  // return <div>hello {JSON.stringify(data)}</div>;
 };
 
 export default StravaAuth;
