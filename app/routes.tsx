@@ -26,6 +26,7 @@ const mockroutes = [{ name: "name1" }, { name: "name2" }, { name: "name3" }];
 
 const FetchRoutes = (props: RouteProps) => {
   const { data, error, isLoading } = useSWR("Routes", async () => {
+    console.log(process.env.X_API_KEY, props, "stuff");
     const query = `
       query MyQuery {
         getPlansByUserId(userId: ${String(props.user)}) {
@@ -48,7 +49,7 @@ const FetchRoutes = (props: RouteProps) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "x-api-key": `da2-wrw64mkljfhxve4zcjlzym56ky`,
+            "x-api-key": `${process.env.X_API_KEY}`,
             // Authorization: `Bearer ${JSON.stringify(token)}`,
           },
           body: JSON.stringify({ query }),
