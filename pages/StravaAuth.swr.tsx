@@ -11,7 +11,8 @@ export const StravaAuth = (props: { code: any }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Origin: "https://8882-190-129-180-114.ngrok-free.app",
+          Origin:
+            "https://0500-2001-1388-49ea-8ea6-7954-f709-5d9d-782.ngrok-free.app",
         },
         body: JSON.stringify({
           service: "strava",
@@ -24,7 +25,8 @@ export const StravaAuth = (props: { code: any }) => {
 
   if (error) return <div>failed to load</div>;
   if (isLoading) return <div>loading...</div>;
-  // return <div>hello {JSON.stringify(data)}</div>;
+  localStorage.setItem("access_token", data.access_token);
+  return <div>hello {JSON.stringify(data)}</div>;
 };
 
 export default StravaAuth;

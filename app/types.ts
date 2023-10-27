@@ -30,3 +30,30 @@ export interface TokenResponse {
   athlete: Athlete;
   iat: number;
 }
+
+export type MileData = {
+  elevationGain: number;
+  elevationLoss: number;
+  pace: number;
+};
+
+export type Plan = {
+  id: string;
+  name: string;
+  mileData: MileData[];
+  startTime: number;
+};
+
+export interface getPlansByUserId {
+  getPlansByUserId: Plan[];
+}
+
+export interface GetPlansByUserId {
+  data: getPlansByUserId;
+}
+
+export interface PlanProps {
+  user: number;
+  setPlans: Function;
+  plans: GetPlansByUserId;
+}
