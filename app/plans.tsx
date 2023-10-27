@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import useSWR from "swr";
 import { Plan, PlanProps } from "./types";
 import { PlanView } from "./planView";
 
@@ -18,13 +17,6 @@ const Heading = styled.h1`
 const ListContainer = styled.div`
   /* Add any additional styles you need */
 `;
-
-function ExpandedPlan(plan: Plan | undefined) {
-  if (!plan) {
-    return null;
-  }
-  return <h1>{plan.name}</h1>;
-}
 
 function UserPlans(props: PlanProps) {
   const [expandedItem, setExpandedItem] = useState("");

@@ -1,4 +1,4 @@
-import { MileData, Plan } from "./types";
+import { Plan } from "./types";
 
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -49,6 +49,12 @@ const ButtonParent = styled.div`
   margin: 0 0 0 auto; /* auto left margin pushes element to the right */
 `;
 
+const ExpandedInfo = styled.div`
+  margin: 0 0 500px 0;
+`;
+
+const MileDataTable = styled.table``;
+
 const PlanGain = styled.div``;
 const PlanLoss = styled.div``;
 
@@ -72,6 +78,11 @@ export const PlanView = (props: PlanViewProps) => {
       return "flex";
     }
   };
+
+  const amIExpanded = () => {
+    return props.expandedItem === props.id;
+  };
+
   return (
     <PlanContainer style={{ display: evaluateExpandedItem() }}>
       <Avatar>
@@ -96,9 +107,16 @@ export const PlanView = (props: PlanViewProps) => {
       </PlanContent>
       <ButtonParent>
         <ExpandButton onClick={() => toggleExpand(props.id)}>
-          {expanded ? "▼" : "▲"}
+          {expanded ? "▲" : "▼"}
         </ExpandButton>
       </ButtonParent>
+      {amIExpanded() ? (
+        <ExpandedInfo>
+          <MileDataTable></MileDataTable>
+        </ExpandedInfo>
+      ) : (
+        <div></div>
+      )}
     </PlanContainer>
   );
 };

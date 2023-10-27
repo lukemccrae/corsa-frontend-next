@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import useSWR from "swr";
 
 export const StravaAuth = (props: { code: any }) => {

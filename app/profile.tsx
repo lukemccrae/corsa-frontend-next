@@ -1,4 +1,3 @@
-import jwt_decode from "jwt-decode";
 import { TokenResponse } from "./types";
 import React, { useEffect, useState } from "react";
 import StatusBar from "./statusBar";
