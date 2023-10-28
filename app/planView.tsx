@@ -2,6 +2,7 @@ import { Plan } from "./types";
 
 import React, { useState } from "react";
 import styled from "styled-components";
+import { MapLoading } from "./mapLoading";
 
 interface PlanViewProps {
   plan: Plan;
@@ -11,11 +12,12 @@ interface PlanViewProps {
   id: string;
 }
 
-const PlanContainer = styled.div`
+export const PlanContainer = styled.div`
   display: flex;
   border: 1px solid #ccc;
   padding: 10px;
   margin: 10px;
+  flex-wrap: wrap;
 `;
 
 const Avatar = styled.div`
@@ -51,9 +53,29 @@ const ButtonParent = styled.div`
 
 const ExpandedInfo = styled.div`
   margin: 0 0 500px 0;
+  flex-basis: 100%;
 `;
 
-const MileDataTable = styled.table``;
+const Map = styled.div`
+  display: flex;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+`;
+
+const ElevationProfile = styled.div`
+  display: flex;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+`;
+
+const MileDataTable = styled.table`
+  display: flex;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+`;
 
 const PlanGain = styled.div``;
 const PlanLoss = styled.div``;
@@ -98,7 +120,7 @@ export const PlanView = (props: PlanViewProps) => {
           ft.
         </PlanGain>
         <PlanLoss>
-          Total gain:{" "}
+          Total loss:{" "}
           {props.plan.mileData.reduce((accumulator, currentObject) => {
             return accumulator + currentObject.elevationLoss;
           }, 0)}{" "}
@@ -112,7 +134,9 @@ export const PlanView = (props: PlanViewProps) => {
       </ButtonParent>
       {amIExpanded() ? (
         <ExpandedInfo>
-          <MileDataTable></MileDataTable>
+          <MapLoading id={props.id}></MapLoading>
+          <ElevationProfile>vert profile</ElevationProfile>
+          <MileDataTable>mile data</MileDataTable>
         </ExpandedInfo>
       ) : (
         <div></div>
