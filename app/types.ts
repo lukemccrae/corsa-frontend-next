@@ -71,10 +71,28 @@ export interface Feature {
   properties: {
     id: number;
     name: string;
+    mileInfo: MileInfo[];
   };
 }
+
+type MileInfo = {
+  elevationGain: number;
+  elevationLoss: number;
+};
 
 export interface FeatureCollection {
   type: string;
   features: Feature[];
+}
+
+export interface MapViewProps {
+  geoJson: GraphQLFeatureCollection;
+}
+
+export interface GraphQLFeatureCollection {
+  data: GetGeoJsonBySortKey;
+}
+
+export interface GetGeoJsonBySortKey {
+  getGeoJsonBySortKey: FeatureCollection;
 }

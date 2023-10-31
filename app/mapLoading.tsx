@@ -1,26 +1,33 @@
 import React, { useRef } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useEffect, useState } from "react";
-import { FeatureCollection } from "./types";
+import { FeatureCollection, GraphQLFeatureCollection } from "./types";
 import { fetchGeoJson } from "./services/fetchGeoJson.service";
-import { MapView } from "./mapView";
+import MapView from "./mapView";
 
 interface MapLoadingProps {
   id: string;
+  setAlert: Function;
+  setGeoJson: Function;
+  geoJson: any;
 }
 
 export const MapLoading = (props: MapLoadingProps) => {
+  const typedGeoJson: GraphQLFeatureCollection = props.geoJson;
   const [loading, setLoading] = useState(true);
-  const [geoJson, setGeoJson] = useState();
   useEffect(() => {
     const planId = props.id;
+    const setAlert = props.setAlert;
+    const setGeoJson = props.setGeoJson;
 
     // loading var keeps fetch from firing more than once
-    fetchGeoJson({ planId, setGeoJson }).finally(() => setLoading(false));
+    fetchGeoJson({ planId, setGeoJson, setAlert }).finally(() =>
+      setLoading(false)
+    );
   }, [props.id]);
   if (loading) {
     return <div>loading...</div>;
   } else {
-    if (geoJson) return <MapView geoJson={geoJson}></MapView>;
+    if (typedGeoJson) return <MapView geoJson={typedGeoJson}></MapView>;
   }
 };

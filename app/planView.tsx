@@ -3,6 +3,8 @@ import { Plan } from "./types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { MapLoading } from "./mapLoading";
+import Alert from "./alert";
+import { ElevationProfile } from "./elevationProfile";
 
 interface PlanViewProps {
   plan: Plan;
@@ -63,13 +65,6 @@ const Map = styled.div`
   margin: 10px;
 `;
 
-const ElevationProfile = styled.div`
-  display: flex;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px;
-`;
-
 const MileDataTable = styled.table`
   display: flex;
   border: 1px solid #ccc;
@@ -82,6 +77,8 @@ const PlanLoss = styled.div``;
 
 export const PlanView = (props: PlanViewProps) => {
   const [expanded, setExpanded] = useState(false);
+  const [alert, setAlert] = useState();
+  const [geoJson, setGeoJson] = useState();
 
   const toggleExpand = (id: string) => {
     setExpanded(!expanded);
@@ -134,8 +131,17 @@ export const PlanView = (props: PlanViewProps) => {
       </ButtonParent>
       {amIExpanded() ? (
         <ExpandedInfo>
-          <MapLoading id={props.id}></MapLoading>
-          <ElevationProfile>vert profile</ElevationProfile>
+          <Alert message={String(alert)}></Alert>{" "}
+          <MapLoading // TODO: bad name
+            geoJson={geoJson}
+            setGeoJson={setGeoJson}
+            setAlert={setAlert}
+            id={props.id}
+          ></MapLoading>
+          <ElevationProfile
+            mileData={props.plan.mileData}
+            geoJson={geoJson}
+          ></ElevationProfile>
           <MileDataTable>mile data</MileDataTable>
         </ExpandedInfo>
       ) : (
