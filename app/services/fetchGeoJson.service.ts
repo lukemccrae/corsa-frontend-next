@@ -9,22 +9,20 @@ interface FetchGeoJsonProps {
 
 export const fetchGeoJson = async (props: FetchGeoJsonProps): Promise<void> => {
   const query = `
-          query MyQuery {
-              getGeoJsonBySortKey(sortKey: "${props.planId}") {
-              features {
-                  geometry {
-                  coordinates
-                  properties {
-                      id
-                      name
+                  query MyQuery {
+                    getGeoJsonBySortKey(sortKey: "${props.planId}") {
+                      features {
+                        properties {
+                          mileData {
+                            index
+                          }
+                        }
+                        geometry {
+                          coordinates
+                        }
+                      }
+                    }
                   }
-                  type
-                  }
-                  type
-              }
-              type
-              }
-          }
     `;
 
   try {

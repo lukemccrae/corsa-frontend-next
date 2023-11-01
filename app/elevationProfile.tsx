@@ -11,7 +11,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { GraphQLFeatureCollection, MileData } from "./types";
+import { MileData } from "./types";
 
 ChartJS.register(
   CategoryScale,
@@ -24,7 +24,7 @@ ChartJS.register(
 );
 
 interface ElevationProfileProps {
-  geoJson: any;
+  chartProfilePoints: number[];
   mileData: MileData[];
 }
 
@@ -38,13 +38,11 @@ const ChartWrapper = styled.div`
 `;
 
 export const ElevationProfile = (props: ElevationProfileProps) => {
-  if (!props.geoJson) {
+  if (!props.chartProfilePoints) {
     return <div>Loading</div>;
   }
 
-  const typedGeoJson: GraphQLFeatureCollection = props.geoJson;
-
-  console.log(props.mileData, "<< props.mileData");
+  console.log(props.chartProfilePoints);
 
   const labels = Array.from(
     {
@@ -58,12 +56,15 @@ export const ElevationProfile = (props: ElevationProfileProps) => {
     datasets: [
       {
         label: "Dataset 1",
-        data: labels.map((l, i) => Math.random() * i),
+        data: props.chartProfilePoints,
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
+        fill: true,
+        borderWidth: 1,
       },
     ],
   };
+
   const chartOptions = {
     responsive: true,
     plugins: {

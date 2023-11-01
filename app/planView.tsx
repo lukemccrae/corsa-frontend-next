@@ -1,10 +1,17 @@
-import { Plan } from "./types";
+import { GraphQLFeatureCollection, MileData, Plan } from "./types";
 
 import React, { useState } from "react";
 import styled from "styled-components";
 import { MapLoading } from "./mapLoading";
 import Alert from "./alert";
 import { ElevationProfile } from "./elevationProfile";
+import { geoJSON } from "leaflet";
+import { MileDataTable } from "./mileData";
+import {
+  amIExpanded,
+  evaluateExpandedItem,
+  toggleExpand,
+} from "./helpers/display.helpers";
 
 interface PlanViewProps {
   plan: Plan;
@@ -65,13 +72,6 @@ const Map = styled.div`
   margin: 10px;
 `;
 
-const MileDataTable = styled.table`
-  display: flex;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px;
-`;
-
 const PlanGain = styled.div``;
 const PlanLoss = styled.div``;
 
@@ -80,30 +80,40 @@ export const PlanView = (props: PlanViewProps) => {
   const [alert, setAlert] = useState();
   const [geoJson, setGeoJson] = useState();
 
-  const toggleExpand = (id: string) => {
-    setExpanded(!expanded);
-    if (props.expandedItem) {
-      props.setExpandedItem("");
-    } else {
-      props.setExpandedItem(id);
-    }
-  };
+  let chartProfilePoints: number[] = [];
+  let mileProfilePoints: number[][] = [];
 
-  const evaluateExpandedItem = () => {
-    if (props.expandedItem !== "") {
-      if (props.expandedItem === props.id) return "flex";
-      return "none";
-    } else {
-      return "flex";
-    }
-  };
+  if (geoJson) {
+    const typedGeoJson: GraphQLFeatureCollection =
+      geoJson as unknown as GraphQLFeatureCollection;
 
-  const amIExpanded = () => {
-    return props.expandedItem === props.id;
-  };
+    console.log(typedGeoJson, "<< typedGeoJson");
+
+    const milePoints =
+      typedGeoJson.data.getGeoJsonBySortKey.features[0].geometry.coordinates;
+
+    chartProfilePoints = milePoints
+      .filter((c, i) => c[2] && i % 20 === 0)
+      .map((c) => Math.round(c[2]));
+
+    typedGeoJson.data.getGeoJsonBySortKey.features[0].properties.mileData.forEach(
+      (md: MileData, mi) => {
+        let percent = 0.01;
+        const length = md.index;
+        let profilePoints = [];
+        for (let i = 0; i < 21; i++) {
+          profilePoints.push(milePoints[percent * length]);
+          percent += 0.05;
+        }
+        mileProfilePoints.push(profilePoints);
+      }
+    );
+  }
+
+  console.log(chartProfilePoints, "<< vertProfilePoints");
 
   return (
-    <PlanContainer style={{ display: evaluateExpandedItem() }}>
+    <PlanContainer style={{ display: evaluateExpandedItem(props) }}>
       <Avatar>
         <AvatarBox />
       </Avatar>
@@ -125,11 +135,13 @@ export const PlanView = (props: PlanViewProps) => {
         </PlanLoss>
       </PlanContent>
       <ButtonParent>
-        <ExpandButton onClick={() => toggleExpand(props.id)}>
+        <ExpandButton
+          onClick={() => toggleExpand(props.id, setExpanded, expanded, props)}
+        >
           {expanded ? "▲" : "▼"}
         </ExpandButton>
       </ButtonParent>
-      {amIExpanded() ? (
+      {amIExpanded(props) ? (
         <ExpandedInfo>
           <Alert message={String(alert)}></Alert>{" "}
           <MapLoading // TODO: bad name
@@ -139,10 +151,14 @@ export const PlanView = (props: PlanViewProps) => {
             id={props.id}
           ></MapLoading>
           <ElevationProfile
+            chartProfilePoints={chartProfilePoints}
             mileData={props.plan.mileData}
-            geoJson={geoJson}
           ></ElevationProfile>
-          <MileDataTable>mile data</MileDataTable>
+          <MileDataTable
+            geoJson={geoJson}
+            mileData={props.plan.mileData}
+            mileProfilePoints={mileProfilePoints}
+          ></MileDataTable>
         </ExpandedInfo>
       ) : (
         <div></div>

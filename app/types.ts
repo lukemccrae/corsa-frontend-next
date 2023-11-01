@@ -31,12 +31,6 @@ export interface TokenResponse {
   iat: number;
 }
 
-export type MileData = {
-  elevationGain: number;
-  elevationLoss: number;
-  pace: number;
-};
-
 export type Plan = {
   id: string;
   name: string;
@@ -71,11 +65,12 @@ export interface Feature {
   properties: {
     id: number;
     name: string;
-    mileInfo: MileInfo[];
+    mileData: MileData[];
   };
 }
 
-type MileInfo = {
+export type MileData = {
+  index: number;
   elevationGain: number;
   elevationLoss: number;
 };
