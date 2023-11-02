@@ -33,6 +33,7 @@ function UserPlans(props: PlanProps) {
                 key={plan.id}
                 plan={plan}
                 id={plan.id}
+                user={props.user}
               ></PlanView>
             </div>
           );

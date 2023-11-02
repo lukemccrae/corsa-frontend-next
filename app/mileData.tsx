@@ -1,5 +1,15 @@
 import { styled } from "styled-components";
 import { GraphQLFeatureCollection, MileData } from "./types";
+import { MileProfile } from "./mileProfile";
+import { useEffect, useState } from "react";
+import { fetchMileProfile } from "./services/fetchMileProfile";
+
+const Point = styled.div`
+  width: 1px;
+  height: 1px;
+  margin-right: 2px;
+  background-color: black;
+`;
 
 const DataTable = styled.div`
   display: flex;
@@ -24,33 +34,17 @@ interface MileDataProps {
   mileData: MileData[];
   geoJson: any;
   mileProfilePoints: number[][];
+  user: number;
 }
 
-// const Point = styled.div`
-//   width: 1px;
-//   height: 1px;
-//   padding-bottom: ${(props) => props.vert + "px"};
-//   margin-right: 2px;
-//   background-color: black;
-// `;
-
-// const ProfileBox = styled.div`
-//   display: inline-flex;
-//   align-items: baseline;
-// `;
-
-const secondsToMinutesAndSeconds = (seconds: number) => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-
-  const minutesString = String(minutes).padStart(2, "0"); // Ensure two digits for minutes
-  const secondsString = String(remainingSeconds).padStart(2, "0"); // Ensure two digits for seconds
-
-  return `${minutesString}:${secondsString}`;
-};
-
 export const MileDataTable = (props: MileDataProps) => {
-  console.log(props.mileProfilePoints, "<< mileProfilePoints");
+  const [profile, setProfile] = useState();
+
+  const user = props.user;
+
+  useEffect(() => {
+    fetchMileProfile({ user, setProfile });
+  }, [props.user]);
   return (
     <table
       style={{
@@ -77,7 +71,13 @@ export const MileDataTable = (props: MileDataProps) => {
             <MileBox key={i}>
               <TableData>{i + 1}</TableData>
               <TableData>Pace</TableData>
-              <TableData>{i}</TableData>
+              <TableData>
+                {profile ? (
+                  <MileProfile profile={profile[i]}></MileProfile>
+                ) : (
+                  <div></div>
+                )}
+              </TableData>
               <TableData>avg paces</TableData>
               <TableData>{m.elevationGain}</TableData>
               <TableData>{m.elevationLoss}</TableData>

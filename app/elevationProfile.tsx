@@ -42,8 +42,6 @@ export const ElevationProfile = (props: ElevationProfileProps) => {
     return <div>Loading</div>;
   }
 
-  console.log(props.chartProfilePoints);
-
   const labels = Array.from(
     {
       length: props.mileData.length + 2,

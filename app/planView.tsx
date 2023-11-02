@@ -12,6 +12,7 @@ import {
   evaluateExpandedItem,
   toggleExpand,
 } from "./helpers/display.helpers";
+import { equalizePercents } from "./helpers/elevation.helper";
 
 interface PlanViewProps {
   plan: Plan;
@@ -19,6 +20,7 @@ interface PlanViewProps {
   setExpandedItem: Function;
   expandedItem: string;
   id: string;
+  user: number;
 }
 
 export const PlanContainer = styled.div`
@@ -87,30 +89,13 @@ export const PlanView = (props: PlanViewProps) => {
     const typedGeoJson: GraphQLFeatureCollection =
       geoJson as unknown as GraphQLFeatureCollection;
 
-    console.log(typedGeoJson, "<< typedGeoJson");
-
     const milePoints =
       typedGeoJson.data.getGeoJsonBySortKey.features[0].geometry.coordinates;
 
     chartProfilePoints = milePoints
       .filter((c, i) => c[2] && i % 20 === 0)
       .map((c) => Math.round(c[2]));
-
-    typedGeoJson.data.getGeoJsonBySortKey.features[0].properties.mileData.forEach(
-      (md: MileData, mi) => {
-        let percent = 0.01;
-        const length = md.index;
-        let profilePoints = [];
-        for (let i = 0; i < 21; i++) {
-          profilePoints.push(milePoints[percent * length]);
-          percent += 0.05;
-        }
-        mileProfilePoints.push(profilePoints);
-      }
-    );
   }
-
-  console.log(chartProfilePoints, "<< vertProfilePoints");
 
   return (
     <PlanContainer style={{ display: evaluateExpandedItem(props) }}>
@@ -158,6 +143,7 @@ export const PlanView = (props: PlanViewProps) => {
             geoJson={geoJson}
             mileData={props.plan.mileData}
             mileProfilePoints={mileProfilePoints}
+            user={props.user}
           ></MileDataTable>
         </ExpandedInfo>
       ) : (
