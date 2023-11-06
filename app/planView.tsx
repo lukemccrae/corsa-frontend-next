@@ -6,22 +6,13 @@ import { MapLoading } from "./mapLoading";
 import Alert from "./alert";
 import { ElevationProfile } from "./elevationProfile";
 import { geoJSON } from "leaflet";
-import { MileDataTable } from "./mileData";
+import { MileDataTable, averagePaces, calcTime } from "./mileData";
 import {
   amIExpanded,
   evaluateExpandedItem,
   toggleExpand,
 } from "./helpers/display.helpers";
 import { equalizePercents } from "./helpers/elevation.helper";
-
-interface PlanViewProps {
-  plan: Plan;
-  key: string;
-  setExpandedItem: Function;
-  expandedItem: string;
-  id: string;
-  user: number;
-}
 
 export const PlanContainer = styled.div`
   display: flex;
@@ -42,13 +33,42 @@ const AvatarBox = styled.div`
   background-color: #007bff;
 `;
 
-const PlanContent = styled.div`
-  margin-left: 10px;
+export const ListBox = styled.div`
+  -webkit-box-flex: 1;
+  color: #2b2b2b;
+  -ms-flex: 1 1;
+  flex: 1 1;
+  display: flex;
+  position: relative;
 `;
 
-const PlanTitle = styled.h3`
-  font-size: 16px;
+export const PlanContentList = styled.ul`
+  color: #2b2b2b;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 0;
+  margin-top: 0;
+  display: flex;
+  color: white;
+`;
+
+export const PlanContentItem = styled.li`
+  border-right: 1px solid #f3f2ed;
+  margin-left: 0;
+  margin-right: 16px;
+  padding-right: 16px;
+`;
+
+const PlanContentItemNoBorder = styled.li`
+  margin-left: 0;
+  margin-right: 16px;
+  padding-right: 16px;
+`;
+
+const PlanTitle = styled.h1`
   margin: 0;
+  font-size: 24px;
 `;
 
 const ExpandButton = styled.button`
@@ -63,7 +83,7 @@ const ButtonParent = styled.div`
 `;
 
 const ExpandedInfo = styled.div`
-  margin: 0 0 500px 0;
+  margin: 0 0 auto 0;
   flex-basis: 100%;
 `;
 
@@ -73,9 +93,27 @@ const Map = styled.div`
   padding: 10px;
   margin: 10px;
 `;
+export const Item = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+`;
 
-const PlanGain = styled.div``;
-const PlanLoss = styled.div``;
+export const Detail = styled.div`
+  font-size: 20px;
+  line-height: 25px;
+  white-space: nowrap;
+`;
+
+interface PlanViewProps {
+  plan: Plan;
+  adjustPace: Function;
+  key: string;
+  setExpandedItem: Function;
+  expandedItem: string;
+  id: string;
+  user: number;
+}
 
 export const PlanView = (props: PlanViewProps) => {
   const [expanded, setExpanded] = useState(false);
@@ -93,32 +131,72 @@ export const PlanView = (props: PlanViewProps) => {
       typedGeoJson.data.getGeoJsonBySortKey.features[0].geometry.coordinates;
 
     chartProfilePoints = milePoints
-      .filter((c, i) => c[2] && i % 20 === 0)
+      .filter((c, i) => c[2] && i % 10 === 0)
       .map((c) => Math.round(c[2]));
   }
 
   return (
     <PlanContainer style={{ display: evaluateExpandedItem(props) }}>
-      <Avatar>
+      {/* Idea for this is a server-rendered image of the activity */}
+      {/* <Avatar>
         <AvatarBox />
-      </Avatar>
-      <PlanContent>
+      </Avatar> */}
+      <div style={{ margin: "0 0 0 12px" }}>
         <PlanTitle>{props.plan.name}</PlanTitle>
-        <PlanGain>
-          Total gain:{" "}
-          {props.plan.mileData.reduce((accumulator, currentObject) => {
-            return accumulator + currentObject.elevationGain;
-          }, 0)}
-          ft.
-        </PlanGain>
-        <PlanLoss>
-          Total loss:{" "}
-          {props.plan.mileData.reduce((accumulator, currentObject) => {
-            return accumulator + currentObject.elevationLoss;
-          }, 0)}{" "}
-          ft.
-        </PlanLoss>
-      </PlanContent>
+        <ListBox>
+          <PlanContentList>
+            <PlanContentItem>
+              <Item>
+                <span>Total gain: </span>
+                <Detail>
+                  {props.plan.mileData.reduce((accumulator, currentObject) => {
+                    return accumulator + currentObject.elevationGain;
+                  }, 0)}
+                  {" ft."}
+                </Detail>
+              </Item>
+            </PlanContentItem>
+            <PlanContentItem>
+              <Item>
+                <span>Total loss: </span>
+                <Detail>
+                  {props.plan.mileData.reduce((accumulator, currentObject) => {
+                    return accumulator + currentObject.elevationLoss;
+                  }, 0)}
+                  {" ft."}
+                </Detail>
+              </Item>
+            </PlanContentItem>
+            <PlanContentItem>
+              <Item>
+                <span>Distance</span>
+                <Detail>
+                  {props.plan.mileData.length}
+                  {" mi."}
+                </Detail>
+              </Item>
+            </PlanContentItem>
+            <PlanContentItem>
+              <Item>
+                <span>Average pace</span>
+                <Detail>
+                  {averagePaces(props.plan.mileData)}
+                  {" /mi."}
+                </Detail>
+              </Item>
+            </PlanContentItem>
+            <PlanContentItemNoBorder>
+              <Item>
+                <span>Total time</span>
+                <Detail>
+                  {calcTime(props.plan.mileData, 0)}
+                  {""}
+                </Detail>
+              </Item>
+            </PlanContentItemNoBorder>
+          </PlanContentList>
+        </ListBox>
+      </div>
       <ButtonParent>
         <ExpandButton
           onClick={() => toggleExpand(props.id, setExpanded, expanded, props)}
@@ -128,7 +206,14 @@ export const PlanView = (props: PlanViewProps) => {
       </ButtonParent>
       {amIExpanded(props) ? (
         <ExpandedInfo>
-          <Alert message={String(alert)}></Alert>{" "}
+          {alert ? <Alert message={String(alert)}></Alert> : <div></div>}
+          <MileDataTable
+            plan={props.plan}
+            adjustPace={props.adjustPace}
+            mileProfilePoints={mileProfilePoints}
+            user={props.user}
+            startTime={props.plan.startTime}
+          ></MileDataTable>
           <MapLoading // TODO: bad name
             geoJson={geoJson}
             setGeoJson={setGeoJson}
@@ -139,12 +224,6 @@ export const PlanView = (props: PlanViewProps) => {
             chartProfilePoints={chartProfilePoints}
             mileData={props.plan.mileData}
           ></ElevationProfile>
-          <MileDataTable
-            geoJson={geoJson}
-            mileData={props.plan.mileData}
-            mileProfilePoints={mileProfilePoints}
-            user={props.user}
-          ></MileDataTable>
         </ExpandedInfo>
       ) : (
         <div></div>

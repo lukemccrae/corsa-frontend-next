@@ -1,11 +1,21 @@
-import { TokenResponse } from "./types";
+import { Plan, TokenResponse } from "./types";
 import React, { useEffect, useState } from "react";
 import StatusBar from "./statusBar";
 import Plans from "./plans";
 import { fetchPlans } from "./services/fetchPlans.service";
+import { updatePlan } from "./services/updatePlan";
 
 export const Profile = (props: { user: TokenResponse }) => {
-  const [plans, setPlans] = useState();
+  const [plans, setPlans] = useState<Plan[]>([]);
+
+  const adjustPace = (id: string, amount: number, i: number) => {
+    const plansToEdit = [...plans];
+    const index = plansToEdit.findIndex((obj) => obj.id === id);
+
+    plansToEdit[index].mileData[i].pace += amount;
+    updatePlan(plansToEdit[index]);
+    setPlans(plansToEdit);
+  };
 
   useEffect(() => {
     const user = props.user.athlete.id;
@@ -22,8 +32,9 @@ export const Profile = (props: { user: TokenResponse }) => {
       {plans ? (
         <Plans
           plans={plans}
-          setPlans={setPlans}
+          adjustPace={adjustPace}
           user={props.user.athlete.id}
+          token={props.user.access_token}
         ></Plans>
       ) : (
         <div></div>

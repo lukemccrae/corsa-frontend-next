@@ -6,7 +6,6 @@ interface FetchPlanProps {
 }
 
 export const fetchPlans = async (props: FetchPlanProps) => {
-  // const { data, error, isLoading } = useSWR("Plan", async () => {
   const query = `
         query MyQuery {
           getPlansByUserId(userId: ${String(props.user)}) {
@@ -36,8 +35,7 @@ export const fetchPlans = async (props: FetchPlanProps) => {
       }
     );
     const plans: GetPlansByUserId = await result.json();
-    console.log(plans, "<< plans");
-    props.setPlans(plans);
+    props.setPlans(plans.data.getPlansByUserId);
   } catch (e) {
     console.log(e, "<< error");
   }

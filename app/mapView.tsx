@@ -6,7 +6,7 @@ export default function MapView(props: MapViewProps) {
   const Map = useMemo(
     () =>
       dynamic(() => import("@/app/leaflet"), {
-        loading: () => <p>A map is loading</p>,
+        loading: () => <p>loading...</p>,
         ssr: false,
       }),
     []

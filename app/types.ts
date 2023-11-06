@@ -36,6 +36,7 @@ export type Plan = {
   name: string;
   mileData: MileData[];
   startTime: number;
+  userId: string;
 };
 
 export interface getPlansByUserId {
@@ -46,11 +47,26 @@ export interface GetPlansByUserId {
   data: getPlansByUserId;
 }
 
-export interface PlanProps {
-  user: number;
-  setPlans: Function;
-  plans: GetPlansByUserId;
+export interface UpdatePlanById {
+  data: {
+    updatePlanById: {
+      success: Boolean;
+    };
+  };
 }
+
+export type Activity = {
+  distance: number;
+  id: string;
+  start_date: number;
+  name: string;
+};
+
+export type FetchActivities = {
+  data: {
+    getActivities: Activity[];
+  };
+};
 
 export type LatLng = [number, number];
 export type Altitude = [number];
@@ -73,6 +89,7 @@ export type MileData = {
   index: number;
   elevationGain: number;
   elevationLoss: number;
+  pace: number;
 };
 
 export interface FeatureCollection {

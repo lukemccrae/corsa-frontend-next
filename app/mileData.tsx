@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { GraphQLFeatureCollection, MileData } from "./types";
+import { GraphQLFeatureCollection, MileData, Plan } from "./types";
 import { MileProfile } from "./mileProfile";
 import { useEffect, useState } from "react";
 import { fetchMileProfile } from "./services/fetchMileProfile";
@@ -11,6 +11,24 @@ const Point = styled.div`
   background-color: black;
 `;
 
+export const ArrowLeft = styled.div`
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 5px;
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+`;
+
+export const ArrowRight = styled.div`
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 5px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+`;
+
 const DataTable = styled.div`
   display: flex;
   border: 1px solid #ccc;
@@ -19,7 +37,7 @@ const DataTable = styled.div`
 `;
 
 const MileTableHead = styled.th`
-  width: 60px;
+  text-align: left;
 `;
 
 export const TableData = styled.td`
@@ -30,47 +48,84 @@ const MileBox = styled.tr`
   border-bottom: 1px solid #d3d3d3;
 `;
 
+const toHHMMSS = (secs: number) => {
+  var hours = Math.floor(secs / 3600);
+  var minutes = Math.floor(secs / 60) % 60;
+  var seconds = secs % 60;
+
+  return [hours, minutes, seconds]
+    .map((v) => (v < 10 ? "0" + v : v))
+    .filter((v, i) => v !== "00" || i > 0)
+    .join(":");
+};
+
+export const averagePaces = (md: MileData[]) => {
+  const sum = md.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.pace,
+    0
+  );
+
+  const result = toHHMMSS(Math.round(sum / md.length));
+  return result;
+};
+
+export const calcTime = (md: MileData[], start: number) => {
+  const sum = md.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.pace,
+    0
+  );
+  return toHHMMSS(sum + start);
+};
+
 interface MileDataProps {
-  mileData: MileData[];
-  geoJson: any;
   mileProfilePoints: number[][];
   user: number;
+  startTime: number;
+  plan: Plan;
+  adjustPace: Function;
 }
 
 export const MileDataTable = (props: MileDataProps) => {
   const [profile, setProfile] = useState();
-
   const user = props.user;
 
   useEffect(() => {
     fetchMileProfile({ user, setProfile });
   }, [props.user]);
+
   return (
     <table
       style={{
-        marginLeft: "auto",
-        marginRight: "auto",
         tableLayout: "fixed",
         width: "250px",
+        margin: "30px auto 30px auto",
       }}
     >
       <thead>
         <tr>
-          <MileTableHead>Mile</MileTableHead>
-          <MileTableHead>Pace</MileTableHead>
-          <MileTableHead>Profile</MileTableHead>
-          <MileTableHead>Avg.</MileTableHead>
-          <MileTableHead>Gain</MileTableHead>
-          <MileTableHead>Loss</MileTableHead>
-          <MileTableHead>Time</MileTableHead>
+          <MileTableHead style={{ width: "50px" }}>Mile</MileTableHead>
+          <MileTableHead style={{ width: "90px" }}>Pace</MileTableHead>
+          <MileTableHead style={{ width: "80px" }}>Profile</MileTableHead>
+          <MileTableHead style={{ width: "70px" }}>Avg.</MileTableHead>
+          <MileTableHead style={{ width: "50px" }}>Gain</MileTableHead>
+          <MileTableHead style={{ width: "70px" }}>Loss</MileTableHead>
+          <MileTableHead style={{ width: "70px" }}>Time</MileTableHead>
         </tr>
       </thead>
       <tbody>
-        {props.mileData.map((m, i) => {
+        {props.plan.mileData.map((m, i) => {
           return (
             <MileBox key={i}>
               <TableData>{i + 1}</TableData>
-              <TableData>Pace</TableData>
+              <TableData>
+                <ArrowLeft
+                  onClick={() => props.adjustPace(props.plan.id, -5, i)}
+                ></ArrowLeft>
+                {toHHMMSS(m.pace)}
+                <ArrowRight
+                  onClick={() => props.adjustPace(props.plan.id, 5, i)}
+                ></ArrowRight>
+              </TableData>
               <TableData>
                 {profile ? (
                   <MileProfile profile={profile[i]}></MileProfile>
@@ -78,10 +133,14 @@ export const MileDataTable = (props: MileDataProps) => {
                   <div></div>
                 )}
               </TableData>
-              <TableData>avg paces</TableData>
+              <TableData>
+                {averagePaces(props.plan.mileData.slice(0, i + 1))}
+              </TableData>
               <TableData>{m.elevationGain}</TableData>
               <TableData>{m.elevationLoss}</TableData>
-              <TableData>time of day</TableData>
+              <TableData>
+                {calcTime(props.plan.mileData.slice(0, i + 1), props.startTime)}
+              </TableData>
             </MileBox>
           );
         })}

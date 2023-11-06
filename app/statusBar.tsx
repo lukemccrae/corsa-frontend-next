@@ -8,7 +8,6 @@ interface StatusBarProps {
 
 export const StatusBar = (props: StatusBarProps) => {
   const StatusBarContainer = styled.div`
-    position: fixed;
     top: 0;
     display: flex;
     justify-content: center;

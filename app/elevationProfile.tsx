@@ -30,10 +30,9 @@ interface ElevationProfileProps {
 
 const ChartWrapper = styled.div`
   display: flex;
-  border: 1px solid #ccc;
   padding: 10px;
   margin: 10px;
-  width: 75%;
+  width: 100%;
   height: 300px;
 `;
 
@@ -44,7 +43,7 @@ export const ElevationProfile = (props: ElevationProfileProps) => {
 
   const labels = Array.from(
     {
-      length: props.mileData.length + 2,
+      length: props.chartProfilePoints.length + 2,
     },
     (_, index) => index
   );
@@ -74,10 +73,11 @@ export const ElevationProfile = (props: ElevationProfileProps) => {
         text: "Chart.js Line Chart",
       },
     },
+    // maintainAspectRatio: false,
   };
   return (
     <ChartWrapper>
-      <Line options={chartOptions} data={data}></Line>
+      <Line style={{ width: "100%" }} options={chartOptions} data={data}></Line>
     </ChartWrapper>
   );
 };

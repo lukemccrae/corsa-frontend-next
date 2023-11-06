@@ -40,7 +40,7 @@ export const fetchGeoJson = async (props: FetchGeoJsonProps): Promise<void> => {
     );
 
     const geoJson: GraphQLFeatureCollection = await result.json();
-    console.log(geoJson, "<< geoJson");
+
     if (
       geoJson.data.getGeoJsonBySortKey.features[0].geometry.coordinates.length >
       0
