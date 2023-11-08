@@ -109,7 +109,10 @@ export const MileDataTable = (props: MileDataProps) => {
           <MileTableHead style={{ width: "70px" }}>Avg.</MileTableHead>
           <MileTableHead style={{ width: "50px" }}>Gain</MileTableHead>
           <MileTableHead style={{ width: "70px" }}>Loss</MileTableHead>
-          <MileTableHead style={{ width: "70px" }}>Time</MileTableHead>
+          {/* TODO: make start time editable */}
+          <MileTableHead style={{ width: "70px", display: "none" }}>
+            Time
+          </MileTableHead>
         </tr>
       </thead>
       <tbody>
@@ -127,7 +130,7 @@ export const MileDataTable = (props: MileDataProps) => {
                 ></ArrowRight>
               </TableData>
               <TableData>
-                {profile ? (
+                {profile && profile[i] ? (
                   <MileProfile profile={profile[i]}></MileProfile>
                 ) : (
                   <div></div>
@@ -138,7 +141,8 @@ export const MileDataTable = (props: MileDataProps) => {
               </TableData>
               <TableData>{m.elevationGain}</TableData>
               <TableData>{m.elevationLoss}</TableData>
-              <TableData>
+              {/* TODO: make start time editable */}
+              <TableData style={{ display: "none" }}>
                 {calcTime(props.plan.mileData.slice(0, i + 1), props.startTime)}
               </TableData>
             </MileBox>

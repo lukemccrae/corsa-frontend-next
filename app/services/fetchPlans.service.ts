@@ -1,14 +1,14 @@
 import { GetPlansByUserId } from "../types";
 
 interface FetchPlanProps {
-  user: number;
+  userId: number;
   setPlans: Function;
 }
 
 export const fetchPlans = async (props: FetchPlanProps) => {
   const query = `
         query MyQuery {
-          getPlansByUserId(userId: ${String(props.user)}) {
+          getPlansByUserId(userId: ${String(props.userId)}) {
             id
             mileData {
               elevationGain
@@ -21,6 +21,7 @@ export const fetchPlans = async (props: FetchPlanProps) => {
           }
         }
       `;
+  console.log(query, "<< query");
   try {
     const result = await fetch(
       "https://pannrqk3p5hdhkg2ys3k4jevdu.appsync-api.us-east-1.amazonaws.com/graphql",

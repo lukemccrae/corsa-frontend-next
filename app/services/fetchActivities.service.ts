@@ -26,6 +26,8 @@ export const fetchActivities = async (
       }
     `;
 
+  console.log(query, "<< query");
+
   try {
     const result = await fetch(
       "https://pannrqk3p5hdhkg2ys3k4jevdu.appsync-api.us-east-1.amazonaws.com/graphql",
@@ -40,7 +42,11 @@ export const fetchActivities = async (
       }
     );
     const activities: FetchActivities = await result.json();
-    setActivities(activities.data.getActivities);
+    console.log(activities, "<< activities");
+    if (activities.data) {
+      setActivities(activities.data.getActivities);
+    } else {
+    }
   } catch (e) {
     console.log(e, "<< error");
   }

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+const poweredByStrava = "/api_logo_pwrdBy_strava_horiz_light.svg";
 
 interface StatusBarProps {
   picture: string;
@@ -31,8 +32,9 @@ export const StatusBar = (props: StatusBarProps) => {
       >
         CORSA
       </h1>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", alignItems: "baseline" }}>
         <ProfilePicture src={props.picture} alt="Profile Picture" />
+        <img style={{ width: "100px" }} src={poweredByStrava} alt="My SVG" />
       </div>
     </StatusBarContainer>
   );

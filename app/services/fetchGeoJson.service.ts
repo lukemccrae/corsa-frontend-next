@@ -25,6 +25,8 @@ export const fetchGeoJson = async (props: FetchGeoJsonProps): Promise<void> => {
                   }
     `;
 
+  console.log(query, "<< query");
+
   try {
     const result = await fetch(
       "https://pannrqk3p5hdhkg2ys3k4jevdu.appsync-api.us-east-1.amazonaws.com/graphql",
@@ -47,6 +49,7 @@ export const fetchGeoJson = async (props: FetchGeoJsonProps): Promise<void> => {
     ) {
       props.setGeoJson(geoJson);
     } else {
+      console.log(geoJson, "<< geoJson.data.getGeoJsonBySortKey.features[0]");
       throw new Error(
         "There was something wrong with the retrieval of the associated GPX file."
       );

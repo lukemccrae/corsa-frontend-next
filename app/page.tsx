@@ -1,11 +1,14 @@
 "use client";
+import { useEffect } from "react";
 import { StravaAuth } from "../pages/StravaAuth.swr";
 import { Profile } from "./profile";
 import { TokenResponse } from "./types";
 import jwtDecode from "jwt-decode";
+const connectwithstrava = "/btn_strava_connectwith_light.png";
 
 const StravaAuthorization = () => {
   const redirectToStrava = () => {
+    console.log("hello3");
     // Define the Strava authorization URL
     const stravaAuthorizeUrl =
       "https://www.strava.com/oauth/authorize?client_id=69281&redirect_uri=https://0500-2001-1388-49ea-8ea6-7954-f709-5d9d-782.ngrok-free.app&response_type=code&scope=activity:read";
@@ -25,7 +28,14 @@ const StravaAuthorization = () => {
 
   const access_token = localStorage.getItem("access_token");
 
-  const user = access_token ? decodeToken(access_token) : null;
+  let user;
+
+  if (access_token) {
+    user = decodeToken(access_token as string);
+    // TODO: refresh token not working, so im removing token and forcing reauth
+    if (Date.now() / 1000 > user.expires_at)
+      localStorage.removeItem("access_token");
+  }
 
   return (
     <div>
@@ -38,7 +48,15 @@ const StravaAuthorization = () => {
         {user ? (
           <Profile user={user}></Profile>
         ) : (
-          <button onClick={redirectToStrava}>auth with Strava</button>
+          <button
+            style={{
+              backgroundImage: `url(${connectwithstrava})`,
+              backgroundSize: "cover",
+              width: "200px",
+              height: "50px",
+            }}
+            onClick={redirectToStrava}
+          ></button>
         )}
       </div>
     </div>

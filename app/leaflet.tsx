@@ -22,9 +22,9 @@ const Leaflet: React.FC<any> = (props: LeafletProps) => {
   const length = activity.features[0].geometry.coordinates.length - 10;
 
   const center: LatLngAltitude = [
-    activity.features[0].geometry.coordinates[length / 2][1],
-    activity.features[0].geometry.coordinates[length / 2][0],
-    activity.features[0].geometry.coordinates[length / 2][2],
+    activity.features[0].geometry.coordinates[Math.round(length / 2)][1],
+    activity.features[0].geometry.coordinates[Math.round(length / 2)][0],
+    activity.features[0].geometry.coordinates[Math.round(length / 2)][2],
   ];
   return (
     <div style={{ padding: "10px" }}>

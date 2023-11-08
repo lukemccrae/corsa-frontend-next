@@ -18,8 +18,8 @@ export const Profile = (props: { user: TokenResponse }) => {
   };
 
   useEffect(() => {
-    const user = props.user.athlete.id;
-    fetchPlans({ user, setPlans });
+    const userId = props.user.athlete.id;
+    fetchPlans({ userId, setPlans });
   }, [props.user.athlete.id]);
 
   return (
@@ -35,6 +35,7 @@ export const Profile = (props: { user: TokenResponse }) => {
           adjustPace={adjustPace}
           user={props.user.athlete.id}
           token={props.user.access_token}
+          setPlans={setPlans}
         ></Plans>
       ) : (
         <div></div>

@@ -11,6 +11,7 @@ import {
   PlanContainer,
 } from "./planView";
 import { fetchActivities } from "./services/fetchActivities.service";
+import { createPlanFromActivity } from "./services/createPlan.service";
 
 const PageContainer = styled.div`
   background-color: grey;
@@ -35,21 +36,35 @@ interface PlanProps {
   adjustPace: Function;
   plans: Plan[];
   token: string;
+  setPlans: Function;
 }
 
-interface AddPlanProps {
+interface CreatePlanProps {
   user: number;
   token: string;
   setActivities: Function;
   activities: Activity[];
+  setCreatePlanOpen: Function;
+  setPlans: Function;
 }
 
-const AddPlan = (props: AddPlanProps) => {
+const CreatePlan = (props: CreatePlanProps) => {
   var currentDate = new Date();
 
   // Calculate the date 5 days ago
   var fiveDaysAgo = new Date(currentDate);
   fiveDaysAgo.setDate(currentDate.getDate() - 5);
+
+  const createPlan = (act: Activity) => {
+    createPlanFromActivity(
+      act.id,
+      act.name,
+      props.token,
+      props.user,
+      props.setCreatePlanOpen,
+      props.setPlans
+    );
+  };
 
   useEffect(() => {
     if (props.activities.length === 0) {
@@ -69,8 +84,9 @@ const AddPlan = (props: AddPlanProps) => {
     <div>
       {props.activities.map((act) => {
         return (
-          <PlanContainer>
+          <PlanContainer key={act.id}>
             <button
+              onClick={() => createPlan(act)}
               style={{
                 margin: "10px 30px 10px 5px",
                 border: "1px solid white",
@@ -123,29 +139,31 @@ const AddPlan = (props: AddPlanProps) => {
 
 function UserPlans(props: PlanProps) {
   const [expandedItem, setExpandedItem] = useState("");
-  const [addPlan, setAddPlan] = useState(false);
+  const [createPlanOpen, setCreatePlanOpen] = useState(false);
   const [activities, setActivities] = useState<Activity[]>([]);
 
   const toggleAddPlan = () => {
-    setAddPlan(!addPlan);
+    setCreatePlanOpen(!createPlanOpen);
   };
 
   return (
     <PageContainer>
       <ListContainer>
         <Heading style={{ color: "black" }}>
-          <h1>{addPlan ? "My Activities" : "My Plans"}</h1>
+          <h1>{createPlanOpen ? "My Activities" : "My Plans"}</h1>
           <h1>
             <button onClick={() => toggleAddPlan()}>＋</button>
           </h1>
         </Heading>
-        {addPlan ? (
-          <AddPlan
+        {createPlanOpen ? (
+          <CreatePlan
             activities={activities}
             setActivities={setActivities}
             token={props.token}
             user={props.user}
-          ></AddPlan>
+            setCreatePlanOpen={setCreatePlanOpen}
+            setPlans={props.setPlans}
+          ></CreatePlan>
         ) : (
           <div>
             {props.plans.map((plan: Plan) => {

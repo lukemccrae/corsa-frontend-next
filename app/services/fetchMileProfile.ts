@@ -34,6 +34,7 @@ export const fetchMileProfile = async (
     );
 
     const mileProfile = await result.json();
+    console.log(mileProfile, "<< mp");
     props.setProfile(mileProfile.data.getPlansByUserId[0].mileData);
   } catch (e) {
     console.log(e, "<< error");

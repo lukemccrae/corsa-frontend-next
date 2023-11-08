@@ -68,6 +68,14 @@ export type FetchActivities = {
   };
 };
 
+export type CreatePlanFromActivity = {
+  data: {
+    createPlanFromActivity: {
+      success: boolean;
+    };
+  };
+};
+
 export type LatLng = [number, number];
 export type Altitude = [number];
 export type LatLngAltitude = [number, number, number];
