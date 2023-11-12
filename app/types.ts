@@ -90,6 +90,7 @@ export interface Feature {
     id: number;
     name: string;
     mileData: MileData[];
+    lastMileDistance: number;
   };
 }
 

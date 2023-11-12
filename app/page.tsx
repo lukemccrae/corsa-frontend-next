@@ -11,7 +11,7 @@ const StravaAuthorization = () => {
     console.log("hello3");
     // Define the Strava authorization URL
     const stravaAuthorizeUrl =
-      "https://www.strava.com/oauth/authorize?client_id=69281&redirect_uri=https://0500-2001-1388-49ea-8ea6-7954-f709-5d9d-782.ngrok-free.app&response_type=code&scope=activity:read";
+      "https://www.strava.com/oauth/authorize?client_id=69281&redirect_uri=https://58f8-70-59-19-22.ngrok-free.app&response_type=code&scope=activity:read";
 
     // Perform the redirect
     window.location.href = stravaAuthorizeUrl;
@@ -31,6 +31,7 @@ const StravaAuthorization = () => {
   let user;
 
   if (access_token) {
+    console.log("toknennnn");
     user = decodeToken(access_token as string);
     // TODO: refresh token not working, so im removing token and forcing reauth
     if (Date.now() / 1000 > user.expires_at)

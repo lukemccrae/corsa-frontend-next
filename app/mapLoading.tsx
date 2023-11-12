@@ -10,6 +10,7 @@ interface MapLoadingProps {
   setAlert: Function;
   setGeoJson: Function;
   geoJson: any;
+  setLastMileLength: Function;
 }
 
 export const MapLoading = (props: MapLoadingProps) => {
@@ -19,10 +20,11 @@ export const MapLoading = (props: MapLoadingProps) => {
     const planId = props.id;
     const setAlert = props.setAlert;
     const setGeoJson = props.setGeoJson;
+    const setLastMileLength = props.setLastMileLength;
 
     // loading var keeps fetch from firing more than once
-    fetchGeoJson({ planId, setGeoJson, setAlert }).finally(() =>
-      setLoading(false)
+    fetchGeoJson({ planId, setGeoJson, setAlert, setLastMileLength }).finally(
+      () => setLoading(false)
     );
   }, [props.id]);
   if (loading) {

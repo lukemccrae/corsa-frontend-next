@@ -5,6 +5,7 @@ interface FetchGeoJsonProps {
   planId: string;
   setGeoJson: Function;
   setAlert: Function;
+  setLastMileLength: Function;
 }
 
 export const fetchGeoJson = async (props: FetchGeoJsonProps): Promise<void> => {
@@ -16,6 +17,7 @@ export const fetchGeoJson = async (props: FetchGeoJsonProps): Promise<void> => {
                           mileData {
                             index
                           }
+                          lastMileDistance
                         }
                         geometry {
                           coordinates
@@ -42,12 +44,16 @@ export const fetchGeoJson = async (props: FetchGeoJsonProps): Promise<void> => {
     );
 
     const geoJson: GraphQLFeatureCollection = await result.json();
+    console.log(geoJson, "<< geoJson");
 
     if (
       geoJson.data.getGeoJsonBySortKey.features[0].geometry.coordinates.length >
       0
     ) {
       props.setGeoJson(geoJson);
+      props.setLastMileLength(
+        geoJson.data.getGeoJsonBySortKey.features[0].properties.lastMileDistance
+      );
     } else {
       console.log(geoJson, "<< geoJson.data.getGeoJsonBySortKey.features[0]");
       throw new Error(

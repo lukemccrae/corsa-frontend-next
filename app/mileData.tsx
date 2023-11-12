@@ -83,14 +83,17 @@ interface MileDataProps {
   startTime: number;
   plan: Plan;
   adjustPace: Function;
+  lastMileDistance: number;
+  planIndex: number;
 }
 
 export const MileDataTable = (props: MileDataProps) => {
   const [profile, setProfile] = useState();
   const user = props.user;
+  const planIndex = props.planIndex;
 
   useEffect(() => {
-    fetchMileProfile({ user, setProfile });
+    fetchMileProfile({ user, setProfile, planIndex });
   }, [props.user]);
 
   return (
@@ -104,22 +107,24 @@ export const MileDataTable = (props: MileDataProps) => {
       <thead>
         <tr>
           <MileTableHead style={{ width: "50px" }}>Mile</MileTableHead>
-          <MileTableHead style={{ width: "90px" }}>Pace</MileTableHead>
+          <MileTableHead style={{ width: "90px" }}>Time</MileTableHead>
           <MileTableHead style={{ width: "80px" }}>Profile</MileTableHead>
           <MileTableHead style={{ width: "70px" }}>Avg.</MileTableHead>
           <MileTableHead style={{ width: "50px" }}>Gain</MileTableHead>
           <MileTableHead style={{ width: "70px" }}>Loss</MileTableHead>
           {/* TODO: make start time editable */}
-          <MileTableHead style={{ width: "70px", display: "none" }}>
-            Time
-          </MileTableHead>
+          <MileTableHead style={{ width: "70px" }}>Elapsed</MileTableHead>
         </tr>
       </thead>
       <tbody>
         {props.plan.mileData.map((m, i) => {
           return (
             <MileBox key={i}>
-              <TableData>{i + 1}</TableData>
+              <TableData>
+                {i === props.plan.mileData.length - 1
+                  ? props.lastMileDistance
+                  : i + 1}
+              </TableData>
               <TableData>
                 <ArrowLeft
                   onClick={() => props.adjustPace(props.plan.id, -5, i)}
@@ -142,7 +147,7 @@ export const MileDataTable = (props: MileDataProps) => {
               <TableData>{m.elevationGain}</TableData>
               <TableData>{m.elevationLoss}</TableData>
               {/* TODO: make start time editable */}
-              <TableData style={{ display: "none" }}>
+              <TableData>
                 {calcTime(props.plan.mileData.slice(0, i + 1), props.startTime)}
               </TableData>
             </MileBox>

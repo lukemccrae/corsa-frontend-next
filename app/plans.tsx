@@ -9,6 +9,7 @@ import {
   PlanView,
   Detail,
   PlanContainer,
+  PlanContentItemNoBorder,
 } from "./planView";
 import { fetchActivities } from "./services/fetchActivities.service";
 import { createPlanFromActivity } from "./services/createPlan.service";
@@ -100,7 +101,11 @@ const CreatePlan = (props: CreatePlanProps) => {
                 <PlanContentItem>
                   <Item>
                     <span>Name</span>
-                    <Detail>{act.name}</Detail>
+                    <Detail>
+                      {act.name.length > 40
+                        ? act.name.slice(0, 40) + "..."
+                        : act.name}
+                    </Detail>
                   </Item>
                 </PlanContentItem>
                 <PlanContentItem>
@@ -116,7 +121,7 @@ const CreatePlan = (props: CreatePlanProps) => {
                     </Detail>
                   </Item>
                 </PlanContentItem>
-                <PlanContentItem>
+                <PlanContentItemNoBorder>
                   <Item>
                     <span>Date</span>
                     <Detail>
@@ -127,7 +132,7 @@ const CreatePlan = (props: CreatePlanProps) => {
                       })}
                     </Detail>
                   </Item>
-                </PlanContentItem>
+                </PlanContentItemNoBorder>
               </PlanContentList>
             </ListBox>
           </PlanContainer>
@@ -166,7 +171,7 @@ function UserPlans(props: PlanProps) {
           ></CreatePlan>
         ) : (
           <div>
-            {props.plans.map((plan: Plan) => {
+            {props.plans.map((plan: Plan, i) => {
               return (
                 <div>
                   <PlanView
@@ -177,6 +182,7 @@ function UserPlans(props: PlanProps) {
                     adjustPace={props.adjustPace}
                     id={plan.id}
                     user={props.user}
+                    planIndex={i}
                   ></PlanView>
                 </div>
               );

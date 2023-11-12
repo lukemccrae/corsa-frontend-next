@@ -60,7 +60,7 @@ export const PlanContentItem = styled.li`
   padding-right: 16px;
 `;
 
-const PlanContentItemNoBorder = styled.li`
+export const PlanContentItemNoBorder = styled.li`
   margin-left: 0;
   margin-right: 16px;
   padding-right: 16px;
@@ -113,12 +113,14 @@ interface PlanViewProps {
   expandedItem: string;
   id: string;
   user: number;
+  planIndex: number;
 }
 
 export const PlanView = (props: PlanViewProps) => {
   const [expanded, setExpanded] = useState(false);
   const [alert, setAlert] = useState();
   const [geoJson, setGeoJson] = useState();
+  const [lastMileLength, setLastMileLength] = useState(0.0);
 
   let chartProfilePoints: number[] = [];
   let mileProfilePoints: number[][] = [];
@@ -142,7 +144,12 @@ export const PlanView = (props: PlanViewProps) => {
         <AvatarBox />
       </Avatar> */}
       <div style={{ margin: "0 0 0 12px" }}>
-        <PlanTitle>{props.plan.name}</PlanTitle>
+        <PlanTitle>
+          {" "}
+          {props.plan.name.length > 50
+            ? props.plan.name.slice(0, 50) + "..."
+            : props.plan.name}
+        </PlanTitle>
         <ListBox>
           <PlanContentList>
             <PlanContentItem>
@@ -213,9 +220,12 @@ export const PlanView = (props: PlanViewProps) => {
             mileProfilePoints={mileProfilePoints}
             user={props.user}
             startTime={props.plan.startTime}
+            lastMileDistance={lastMileLength}
+            planIndex={props.planIndex}
           ></MileDataTable>
           <MapLoading // TODO: bad name
             geoJson={geoJson}
+            setLastMileLength={setLastMileLength}
             setGeoJson={setGeoJson}
             setAlert={setAlert}
             id={props.id}

@@ -4,6 +4,7 @@ import { Alert } from "../alert";
 interface FetchMileProfileProps {
   user: number;
   setProfile: Function;
+  planIndex: number;
 }
 
 export const fetchMileProfile = async (
@@ -34,8 +35,9 @@ export const fetchMileProfile = async (
     );
 
     const mileProfile = await result.json();
-    console.log(mileProfile, "<< mp");
-    props.setProfile(mileProfile.data.getPlansByUserId[0].mileData);
+    props.setProfile(
+      mileProfile.data.getPlansByUserId[props.planIndex].mileData
+    );
   } catch (e) {
     console.log(e, "<< error");
   }
