@@ -13,6 +13,7 @@ import {
   toggleExpand,
 } from "./helpers/display.helpers";
 import { equalizePercents } from "./helpers/elevation.helper";
+import { DeleteButton } from "./deleteButton";
 
 export const PlanContainer = styled.div`
   display: flex;
@@ -107,6 +108,7 @@ export const Detail = styled.div`
 
 interface PlanViewProps {
   plan: Plan;
+  plans: Plan[];
   adjustPace: Function;
   key: string;
   setExpandedItem: Function;
@@ -114,6 +116,7 @@ interface PlanViewProps {
   id: string;
   user: number;
   planIndex: number;
+  setPlans: Function;
 }
 
 export const PlanView = (props: PlanViewProps) => {
@@ -234,6 +237,13 @@ export const PlanView = (props: PlanViewProps) => {
             chartProfilePoints={chartProfilePoints}
             mileData={props.plan.mileData}
           ></ElevationProfile>
+          <DeleteButton
+            plans={props.plans}
+            setPlans={props.setPlans}
+            userId={props.user}
+            bucketKey={props.id}
+            setExpanded={setExpanded}
+          ></DeleteButton>
         </ExpandedInfo>
       ) : (
         <div></div>

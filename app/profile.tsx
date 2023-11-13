@@ -8,13 +8,17 @@ import { updatePlan } from "./services/updatePlan";
 export const Profile = (props: { user: TokenResponse }) => {
   const [plans, setPlans] = useState<Plan[]>([]);
 
-  const adjustPace = (id: string, amount: number, i: number) => {
+  const adjustPace = async (id: string, amount: number, i: number) => {
     const plansToEdit = [...plans];
     const index = plansToEdit.findIndex((obj) => obj.id === id);
 
     plansToEdit[index].mileData[i].pace += amount;
-    updatePlan(plansToEdit[index]);
-    setPlans(plansToEdit);
+    try {
+      await updatePlan(plansToEdit[index]);
+      setPlans([...plansToEdit]);
+    } catch (error) {
+      console.error("Error updating plan:", error);
+    }
   };
 
   useEffect(() => {

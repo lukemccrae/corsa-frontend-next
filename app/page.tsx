@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { StravaAuth } from "../pages/StravaAuth.swr";
 import { Profile } from "./profile";
 import { TokenResponse } from "./types";
@@ -31,7 +31,6 @@ const StravaAuthorization = () => {
   let user;
 
   if (access_token) {
-    console.log("toknennnn");
     user = decodeToken(access_token as string);
     // TODO: refresh token not working, so im removing token and forcing reauth
     if (Date.now() / 1000 > user.expires_at)

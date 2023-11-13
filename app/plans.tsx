@@ -1,18 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Activity, Plan } from "./types";
-import {
-  Item,
-  ListBox,
-  PlanContentItem,
-  PlanContentList,
-  PlanView,
-  Detail,
-  PlanContainer,
-  PlanContentItemNoBorder,
-} from "./planView";
-import { fetchActivities } from "./services/fetchActivities.service";
-import { createPlanFromActivity } from "./services/createPlan.service";
+import { Plan } from "./types";
+import { PlanView } from "./planView";
+import { CreatePlan } from "./CreatePlan";
 
 const PageContainer = styled.div`
   background-color: grey;
@@ -40,112 +30,9 @@ interface PlanProps {
   setPlans: Function;
 }
 
-interface CreatePlanProps {
-  user: number;
-  token: string;
-  setActivities: Function;
-  activities: Activity[];
-  setCreatePlanOpen: Function;
-  setPlans: Function;
-}
-
-const CreatePlan = (props: CreatePlanProps) => {
-  var currentDate = new Date();
-
-  // Calculate the date 5 days ago
-  var fiveDaysAgo = new Date(currentDate);
-  fiveDaysAgo.setDate(currentDate.getDate() - 5);
-
-  const createPlan = (act: Activity) => {
-    createPlanFromActivity(
-      act.id,
-      act.name,
-      props.token,
-      props.user,
-      props.setCreatePlanOpen,
-      props.setPlans
-    );
-  };
-
-  useEffect(() => {
-    if (props.activities.length === 0) {
-      fetchActivities(
-        Math.round(fiveDaysAgo.getTime() / 1000),
-        Math.round(new Date().getTime() / 1000),
-        30,
-        1,
-        props.token,
-        props.user,
-        props.setActivities
-      );
-    }
-  }, [props.user]);
-
-  return (
-    <div>
-      {props.activities.map((act) => {
-        return (
-          <PlanContainer key={act.id}>
-            <button
-              onClick={() => createPlan(act)}
-              style={{
-                margin: "10px 30px 10px 5px",
-                border: "1px solid white",
-                padding: "3px",
-              }}
-            >
-              Add
-            </button>
-            <ListBox>
-              <PlanContentList>
-                <PlanContentItem>
-                  <Item>
-                    <span>Name</span>
-                    <Detail>
-                      {act.name.length > 40
-                        ? act.name.slice(0, 40) + "..."
-                        : act.name}
-                    </Detail>
-                  </Item>
-                </PlanContentItem>
-                <PlanContentItem>
-                  <Item>
-                    <span>Distance</span>
-                    <Detail>
-                      {
-                        // weird math for rounding to two decimal
-                        (
-                          Math.round((act.distance * 100) / 1609.34) / 100
-                        ).toFixed(2)
-                      }
-                    </Detail>
-                  </Item>
-                </PlanContentItem>
-                <PlanContentItemNoBorder>
-                  <Item>
-                    <span>Date</span>
-                    <Detail>
-                      {new Date(act.start_date).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </Detail>
-                  </Item>
-                </PlanContentItemNoBorder>
-              </PlanContentList>
-            </ListBox>
-          </PlanContainer>
-        );
-      })}
-    </div>
-  );
-};
-
 function UserPlans(props: PlanProps) {
   const [expandedItem, setExpandedItem] = useState("");
   const [createPlanOpen, setCreatePlanOpen] = useState(false);
-  const [activities, setActivities] = useState<Activity[]>([]);
 
   const toggleAddPlan = () => {
     setCreatePlanOpen(!createPlanOpen);
@@ -162,8 +49,6 @@ function UserPlans(props: PlanProps) {
         </Heading>
         {createPlanOpen ? (
           <CreatePlan
-            activities={activities}
-            setActivities={setActivities}
             token={props.token}
             user={props.user}
             setCreatePlanOpen={setCreatePlanOpen}
@@ -173,8 +58,9 @@ function UserPlans(props: PlanProps) {
           <div>
             {props.plans.map((plan: Plan, i) => {
               return (
-                <div>
+                <div key={i}>
                   <PlanView
+                    plans={props.plans}
                     expandedItem={expandedItem}
                     setExpandedItem={setExpandedItem}
                     key={plan.id}
@@ -183,6 +69,7 @@ function UserPlans(props: PlanProps) {
                     id={plan.id}
                     user={props.user}
                     planIndex={i}
+                    setPlans={props.setPlans}
                   ></PlanView>
                 </div>
               );

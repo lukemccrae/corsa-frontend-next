@@ -68,6 +68,14 @@ export type FetchActivities = {
   };
 };
 
+export type CreatePlanFromGpx = {
+  data: {
+    createPlanFromGpx: {
+      success: boolean;
+    };
+  };
+};
+
 export type CreatePlanFromActivity = {
   data: {
     createPlanFromActivity: {
