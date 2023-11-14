@@ -12,8 +12,35 @@ const redirectToStrava = () => {
     "https://www.strava.com/oauth/authorize?client_id=69281&redirect_uri=https://corsa-run.web.app/&response_type=code&scope=activity:read";
 };
 
-const StravaAuthorization = () => {
+export const StravaAuthorization = () => {
   const location = useLocation();
+  useEffect(() => {
+    console.log(location, "<< location");
+    // const token = localStorage.getItem("acess_token");
+    // three cases
+    // if (token && !user) {
+    // token, no user
+    // setUser(jwtDecode(token));
+    // if (user) {
+    // token, user
+    // do nothing
+    // }
+    // } else {
+    // no token, no user
+    const getCodeFromURL = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get("code");
+    };
+    const code = getCodeFromURL();
+    if (code) {
+      console.log(code, "<< code");
+      // window.history.replaceState({}, document.title, "/");
+      // const resource = stravaAuth(code) as unknown as TokenResponse;
+      // console.log(resource, "resource");
+      // localStorage.setItem("acess_token", resource.access_token);
+    }
+    // }
+  }, []);
 
   return (
     <div>
@@ -33,8 +60,6 @@ const StravaAuthorization = () => {
     </div>
   );
 };
-
-export default StravaAuthorization;
 
 // const redirectToStrava = async () => {
 //   // Define the Strava authorization URL
