@@ -5,6 +5,7 @@ import { Profile } from "./profile";
 import { User } from "./types";
 import jwtDecode from "jwt-decode";
 const connectwithstrava = "/btn_strava_connectwith_light.png";
+import { useNavigate } from "react-router-dom";
 
 const redirectToStrava = () => {
   window.location.href =
@@ -13,6 +14,7 @@ const redirectToStrava = () => {
 
 const StravaAuthorization = () => {
   const [user, setUser] = useState<User>();
+  const navigate = useNavigate();
   useEffect(() => {
     console.log("useEffect");
     // const token = localStorage.getItem("acess_token");
