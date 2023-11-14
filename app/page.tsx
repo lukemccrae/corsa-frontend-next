@@ -14,6 +14,7 @@ const redirectToStrava = () => {
 const StravaAuthorization = () => {
   const [user, setUser] = useState<User>();
   useEffect(() => {
+    console.log("useEffect");
     // const token = localStorage.getItem("acess_token");
     // three cases
     // if (token && !user) {
