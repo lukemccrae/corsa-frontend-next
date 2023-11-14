@@ -11,7 +11,7 @@ export const stravaAuth = async (setUser: Function) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Origin: "https://58f8-70-59-19-22.ngrok-free.app",
+        Origin: "https://corsa-run.web.app/",
       },
       body: JSON.stringify({
         service: "strava",

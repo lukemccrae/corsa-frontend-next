@@ -13,7 +13,7 @@ const StravaAuthorization = () => {
     console.log("happening1");
     // Define the Strava authorization URL
     const stravaAuthorizeUrl =
-      "https://www.strava.com/oauth/authorize?client_id=69281&redirect_uri=https://58f8-70-59-19-22.ngrok-free.app&response_type=code&scope=activity:read";
+      "https://www.strava.com/oauth/authorize?client_id=69281&redirect_uri=https://corsa-run.web.app/&response_type=code&scope=activity:read";
 
     // Perform the redirect
     window.location.href = stravaAuthorizeUrl;
