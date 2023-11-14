@@ -21,7 +21,7 @@ export interface Athlete {
   follower: any;
 }
 
-export interface TokenResponse {
+export interface User {
   token_type: string;
   expires_at: number;
   expires_in: number;

@@ -1,11 +1,11 @@
-import { Plan, TokenResponse } from "./types";
+import { Plan, User } from "./types";
 import React, { useEffect, useState } from "react";
 import StatusBar from "./statusBar";
 import Plans from "./plans";
 import { fetchPlans } from "./services/fetchPlans.service";
 import { updatePlan } from "./services/updatePlan";
 
-export const Profile = (props: { user: TokenResponse }) => {
+export const Profile = (props: { user: User }) => {
   const [plans, setPlans] = useState<Plan[]>([]);
 
   const adjustPace = async (id: string, amount: number, i: number) => {
@@ -20,8 +20,6 @@ export const Profile = (props: { user: TokenResponse }) => {
       console.error("Error updating plan:", error);
     }
   };
-
-  console.log(props, "<< props");
 
   useEffect(() => {
     const userId = props.user.athlete.id;
