@@ -16,7 +16,7 @@ const StravaAuthorization = () => {
   const [user, setUser] = useState<User>();
   const location = useLocation();
   useEffect(() => {
-    console.log(location, '<< location';
+    console.log(location, "<< location");
     // const token = localStorage.getItem("acess_token");
     // three cases
     // if (token && !user) {
