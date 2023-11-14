@@ -4,8 +4,8 @@ import { TokenResponse, stravaAuth } from "./services/stravaAuth.service";
 import { Profile } from "./profile";
 import { User } from "./types";
 import jwtDecode from "jwt-decode";
+import { useLocation } from "react-router-dom";
 const connectwithstrava = "/btn_strava_connectwith_light.png";
-import { useNavigate } from "react-router-dom";
 
 const redirectToStrava = () => {
   window.location.href =
@@ -14,9 +14,9 @@ const redirectToStrava = () => {
 
 const StravaAuthorization = () => {
   const [user, setUser] = useState<User>();
-  const navigate = useNavigate();
+  const location = useLocation();
   useEffect(() => {
-    console.log("useEffect");
+    console.log(location, '<< location';
     // const token = localStorage.getItem("acess_token");
     // three cases
     // if (token && !user) {
@@ -41,7 +41,7 @@ const StravaAuthorization = () => {
       // localStorage.setItem("acess_token", resource.access_token);
     }
     // }
-  }, []);
+  }, [location]);
 
   return (
     <div>
