@@ -21,6 +21,8 @@ export const Profile = (props: { user: TokenResponse }) => {
     }
   };
 
+  console.log(props, "<< props");
+
   useEffect(() => {
     const userId = props.user.athlete.id;
     fetchPlans({ userId, setPlans });

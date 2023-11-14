@@ -1,7 +1,8 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { createPlanFromGpx } from "./services/createPlan.service";
+import { createPlanFromGeoJson } from "./services/createPlan.service";
+import { gpxToGeoJson } from "./services/gpxToGeoJson.service";
 
 interface DatePickProps {
   getActivitiesFromDate: Function;
@@ -11,7 +12,8 @@ export const DatePick = (props: DatePickProps) => {
   const [gpxData, setGpxData] = useState("");
 
   const handleAddButtonClick = async () => {
-    await createPlanFromGpx(gpxData);
+    const geoJson = await gpxToGeoJson(gpxData);
+    // await createPlanFromGeoJson(geoJson);
   };
 
   return (

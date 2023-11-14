@@ -94,7 +94,7 @@ export const MileDataTable = (props: MileDataProps) => {
 
   useEffect(() => {
     fetchMileProfile({ user, setProfile, planIndex });
-  }, [props.user]);
+  }, []);
 
   return (
     <table

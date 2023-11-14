@@ -9,10 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mapbox/togeojson": "^0.16.2",
     "@types/jwt-decode": "^3.1.0",
     "@types/react-datepicker": "^4.19.3",
     "@types/styled-components": "^4.4.1",
     "chart.js": "^4.4.0",
+    "fs": "^0.0.1-security",
     "jwt-decode": "^3.1.2",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
@@ -25,7 +27,8 @@
     "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.17.0",
     "styled-components": "^6.1.0",
-    "swr": "^2.2.4"
+    "swr": "^2.2.4",
+    "xmldom": "^0.6.0"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.7",

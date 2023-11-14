@@ -1,10 +1,10 @@
 import { CreatePlanFromActivity, CreatePlanFromGpx } from "../types";
 import { fetchPlans } from "./fetchPlans.service";
 
-export const createPlanFromGpx = async (gpxData: string) => {
+export const createPlanFromGeoJson = async (geoJsonData: string) => {
   const query = `
       mutation MyMutation {
-        createPlanFromGpx(gpx: "${gpxData}") {
+        createPlanFromGpx(gpx: "${geoJsonData}") {
           success
         }
       }
@@ -12,7 +12,8 @@ export const createPlanFromGpx = async (gpxData: string) => {
 
   try {
     const response = await fetch(
-      "https://pannrqk3p5hdhkg2ys3k4jevdu.appsync-api.us-east-1.amazonaws.com/graphql",
+      "http://localhost:8008/graphql",
+      // "https://pannrqk3p5hdhkg2ys3k4jevdu.appsync-api.us-east-1.amazonaws.com/graphql",
       {
         method: "POST",
         headers: {
