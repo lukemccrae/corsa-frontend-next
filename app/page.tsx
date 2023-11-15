@@ -1,4 +1,4 @@
-import { StravaAuthorization } from "./StravaAuthorization";
+import { StravaAuthorization } from "./stravaAuthorization";
 
 const Page = () => {
   return <StravaAuthorization></StravaAuthorization>;
