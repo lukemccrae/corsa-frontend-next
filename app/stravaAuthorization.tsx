@@ -47,9 +47,12 @@ export const StravaAuthorization = () => {
       const code = getCodeFromURL();
       console.log(code, "<< code");
       if (code) {
-        const resource = stravaAuth(code) as unknown as TokenResponse;
-        console.log(resource, "<< resource");
-        // setToken(resource.access_token);
+        const getResource = async () => {
+          const resource = (await stravaAuth(code)) as unknown as TokenResponse;
+          console.log(resource, "<< resource");
+          setToken(resource.access_token);
+        };
+        getResource();
       }
       // if (code) {
       //   console.log(code, "<< code");
