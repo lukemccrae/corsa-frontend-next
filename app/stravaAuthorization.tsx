@@ -9,7 +9,7 @@ const connectwithstrava = "/btn_strava_connectwith_light.png";
 
 const redirectToStrava = () => {
   window.location.href =
-    "https://www.strava.com/oauth/authorize?client_id=69281&redirect_uri=https://corsa-run.web.app/&response_type=code&scope=activity:read";
+    "https://www.strava.com/oauth/authorize?client_id=69281&redirect_uri=https://corsa-frontend-next.vercel.app/&response_type=code&scope=activity:read";
 };
 
 export const StravaAuthorization = () => {
