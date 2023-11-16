@@ -26,6 +26,7 @@ export const Profile = (props: ProfileProps) => {
   };
 
   useEffect(() => {
+    console.log("profile,  '<< profile");
     const userId = props.user.athlete.id;
     fetchPlans({ userId, setPlans });
   }, [props.user.athlete.id]);

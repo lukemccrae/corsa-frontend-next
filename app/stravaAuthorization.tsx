@@ -16,23 +16,28 @@ export const StravaAuthorization = () => {
   const [user, setUser] = useState<User>();
   const [token, setToken] = useState<string>();
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    const decodedUser = jwtDecode(token as string) as User;
-
-    // //if token is expired remove it
-    if (Date.now() / 1000 > decodedUser.expires_at) {
-      localStorage.removeItem("access_token");
-    }
+    const storedToken = localStorage.getItem("access_token");
+    if (storedToken) setToken(storedToken as string);
 
     // three cases
     if (token && !user) {
+      console.log(storedToken, "<< storedToken");
       // token, no user
+      const decodedUser = jwtDecode(token as string) as User;
 
+      // //if token is expired remove it
+      if (Date.now() / 1000 > decodedUser.expires_at) {
+        localStorage.removeItem("access_token");
+        setToken("");
+      }
+
+      console.log(decodedUser, "<< decodedUser");
       setUser(decodedUser as User);
       // if (user) {
       // token, user
       // do nothing
       // }
+      console.log(decodedUser, "<< decodedUser");
     } else {
       // no token, no user
       const getCodeFromURL = () => {
@@ -42,7 +47,8 @@ export const StravaAuthorization = () => {
       const code = getCodeFromURL();
       if (code) {
         const resource = stravaAuth(code) as unknown as TokenResponse;
-        setToken(resource.access_token);
+        console.log(resource, "<< resource");
+        // setToken(resource.access_token);
       }
       // if (code) {
       //   console.log(code, "<< code");
