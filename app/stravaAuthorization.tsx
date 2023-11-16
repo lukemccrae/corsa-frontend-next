@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { TokenResponse, stravaAuth } from "./services/stravaAuth.service";
 import { Profile } from "./profile";
-import { User } from "./types";
+import { GetPlansByUserId, User } from "./types";
 import jwtDecode from "jwt-decode";
 import { useLocation } from "react-router-dom";
 const connectwithstrava = "/btn_strava_connectwith_light.png";
@@ -13,50 +13,55 @@ const redirectToStrava = () => {
 };
 
 export const StravaAuthorization = () => {
-  const location = useLocation();
+  const [user, setUser] = useState<User>();
   useEffect(() => {
-    console.log(location, "<< location");
-    // const token = localStorage.getItem("acess_token");
+    const token = localStorage.getItem("access_token");
+    console.log(token, "<< token");
+
     // three cases
-    // if (token && !user) {
-    // token, no user
-    // setUser(jwtDecode(token));
-    // if (user) {
-    // token, user
-    // do nothing
-    // }
-    // } else {
-    // no token, no user
-    const getCodeFromURL = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get("code");
-    };
-    const code = getCodeFromURL();
-    if (code) {
-      console.log(code, "<< code");
-      // window.history.replaceState({}, document.title, "/");
-      // const resource = stravaAuth(code) as unknown as TokenResponse;
-      // console.log(resource, "resource");
-      // localStorage.setItem("acess_token", resource.access_token);
+    if (token && !user) {
+      // token, no user
+      const decoded = jwtDecode(token);
+      console.log(decoded, "<< decodeduser");
+      setUser(decoded as User);
+      // if (user) {
+      // token, user
+      // do nothing
+      // }
+    } else {
+      // no token, no user
+      const getCodeFromURL = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get("code");
+      };
+      const code = getCodeFromURL();
+      // if (code) {
+      //   console.log(code, "<< code");
+      //   if (window && document) {
+      //     window.history.replaceState({}, document.title, "/");
+      //     const resource = stravaAuth(code) as unknown as TokenResponse;
+      //     console.log(resource, "resource");
+      //     localStorage.setItem("acess_token", resource.access_token);
+      //   }
+      // }
     }
-    // }
   }, []);
 
   return (
     <div>
-      {/* {user && user.athlete ? (
+      {user && user.athlete ? (
         <Profile user={user}></Profile>
-      ) : ( */}
-      <button
-        style={{
-          backgroundImage: `url(${connectwithstrava})`,
-          backgroundSize: "cover",
-          width: "200px",
-          height: "50px",
-        }}
-        onClick={redirectToStrava}
-      ></button>
-      {/* // )} */}
+      ) : (
+        <button
+          style={{
+            backgroundImage: `url(${connectwithstrava})`,
+            backgroundSize: "cover",
+            width: "200px",
+            height: "50px",
+          }}
+          onClick={redirectToStrava}
+        ></button>
+      )}
     </div>
   );
 };

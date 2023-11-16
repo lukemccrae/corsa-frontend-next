@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -25,7 +25,7 @@
     "react-datepicker": "^4.21.0",
     "react-dom": "^18",
     "react-leaflet": "^4.2.1",
-    "react-router-dom": "^6.17.0",
+    "react-router-dom": "^6.18.0",
     "styled-components": "^6.1.0",
     "swr": "^2.2.4",
     "xmldom": "^0.6.0"
