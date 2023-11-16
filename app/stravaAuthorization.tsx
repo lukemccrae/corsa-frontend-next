@@ -14,16 +14,21 @@ const redirectToStrava = () => {
 
 export const StravaAuthorization = () => {
   const [user, setUser] = useState<User>();
+  const [token, setToken] = useState<string>();
   useEffect(() => {
     const token = localStorage.getItem("access_token");
-    console.log(token, "<< token");
+    const decodedUser = jwtDecode(token as string) as User;
+
+    // //if token is expired remove it
+    if (Date.now() / 1000 > decodedUser.expires_at) {
+      localStorage.removeItem("access_token");
+    }
 
     // three cases
     if (token && !user) {
       // token, no user
-      const decoded = jwtDecode(token);
-      console.log(decoded, "<< decodeduser");
-      setUser(decoded as User);
+
+      setUser(decodedUser as User);
       // if (user) {
       // token, user
       // do nothing
@@ -35,17 +40,21 @@ export const StravaAuthorization = () => {
         return urlParams.get("code");
       };
       const code = getCodeFromURL();
+      if (code) {
+        const resource = stravaAuth(code) as unknown as TokenResponse;
+        setToken(resource.access_token);
+      }
       // if (code) {
       //   console.log(code, "<< code");
       //   if (window && document) {
       //     window.history.replaceState({}, document.title, "/");
-      //     const resource = stravaAuth(code) as unknown as TokenResponse;
+
       //     console.log(resource, "resource");
       //     localStorage.setItem("acess_token", resource.access_token);
       //   }
       // }
     }
-  }, []);
+  }, [token]);
 
   return (
     <div>
@@ -96,7 +105,3 @@ export const StravaAuthorization = () => {
 // }
 
 // console.log(user, "<< user");
-
-// //if token is expired remove it
-// if (user && Date.now() / 1000 > user.expires_at)
-//   localStorage.removeItem("access_token");

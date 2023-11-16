@@ -5,7 +5,11 @@ import Plans from "./plans";
 import { fetchPlans } from "./services/fetchPlans.service";
 import { updatePlan } from "./services/updatePlan";
 
-export const Profile = (props: { user: User }) => {
+interface ProfileProps {
+  user: User;
+}
+
+export const Profile = (props: ProfileProps) => {
   const [plans, setPlans] = useState<Plan[]>([]);
 
   const adjustPace = async (id: string, amount: number, i: number) => {
