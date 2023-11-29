@@ -72,7 +72,10 @@ export const CreatePlan = (props: CreatePlanProps) => {
       ) : (
         <div></div>
       )}
-      <DatePick getActivitiesFromDate={getActivitiesFromDate}></DatePick>
+      <DatePick
+        getActivitiesFromDate={getActivitiesFromDate}
+        userId={props.user}
+      ></DatePick>
 
       {activities.map((act) => {
         return (

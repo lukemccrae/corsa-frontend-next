@@ -2,18 +2,22 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { createPlanFromGeoJson } from "./services/createPlan.service";
-import { gpxToGeoJson } from "./services/gpxToGeoJson.service";
+import { gpxToGeoJsonString } from "./services/gpxToGeoJson.service";
 
 interface DatePickProps {
   getActivitiesFromDate: Function;
+  userId: number;
 }
 
 export const DatePick = (props: DatePickProps) => {
   const [gpxData, setGpxData] = useState("");
 
   const handleAddButtonClick = async () => {
-    const geoJson = await gpxToGeoJson(gpxData);
-    // await createPlanFromGeoJson(geoJson);
+    const geoJsonString = await gpxToGeoJsonString(gpxData);
+    console.log(geoJsonString, "<< geoJsonString");
+    if (typeof geoJsonString !== "string")
+      throw new Error("translating gpx to geoJson has failed");
+    await createPlanFromGeoJson(geoJsonString, String(props.userId));
   };
 
   return (

@@ -36,7 +36,6 @@ export const fetchPlans = async (props: FetchPlanProps) => {
       }
     );
     const plans: GetPlansByUserId = await result.json();
-    console.log(plans, "<< plans");
     props.setPlans(plans.data.getPlansByUserId);
   } catch (e) {
     console.log(e, "<< error");

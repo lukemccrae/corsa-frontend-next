@@ -44,6 +44,7 @@ export interface getPlansByUserId {
 }
 
 export interface GetPlansByUserId {
+  athlete: GetPlansByUserId | undefined;
   data: getPlansByUserId;
 }
 
@@ -68,9 +69,9 @@ export type FetchActivities = {
   };
 };
 
-export type CreatePlanFromGpx = {
+export type CreatePlanFromGeoJson = {
   data: {
-    createPlanFromGpx: {
+    createPlanFromGeoJson: {
       success: boolean;
     };
   };

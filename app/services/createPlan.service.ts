@@ -1,10 +1,13 @@
-import { CreatePlanFromActivity, CreatePlanFromGpx } from "../types";
+import { CreatePlanFromActivity, CreatePlanFromGeoJson } from "../types";
 import { fetchPlans } from "./fetchPlans.service";
 
-export const createPlanFromGeoJson = async (geoJsonData: string) => {
+export const createPlanFromGeoJson = async (
+  geoJsonData: string,
+  userId: string
+) => {
   const query = `
       mutation MyMutation {
-        createPlanFromGpx(gpx: "${geoJsonData}") {
+        createPlanFromGeoJson(geoJsonString: "${geoJsonData}", userId: ${userId}) {
           success
         }
       }
@@ -24,12 +27,7 @@ export const createPlanFromGeoJson = async (geoJsonData: string) => {
         body: JSON.stringify({ query }),
       }
     );
-    const result: CreatePlanFromGpx = await response.json();
-    if (result.data) {
-      if (result.data.createPlanFromGpx.success) {
-        console.log("yayayaya");
-      }
-    }
+    const result: CreatePlanFromGeoJson = await response.json();
     console.log(result, "<< result");
   } catch (e) {
     console.log(e, "<< error");
