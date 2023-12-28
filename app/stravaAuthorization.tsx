@@ -32,7 +32,7 @@ export const StravaAuthorization = () => {
           parsedUser.userId
         )) as unknown as UserResponse;
         console.log(userResponse, "<< userResponse");
-        localStorage.setItem(JSON.stringify(userResponse), "user");
+        localStorage.setItem("user", JSON.stringify(userResponse));
         setUser(userResponse);
       };
       getUserResource();
@@ -50,7 +50,7 @@ export const StravaAuthorization = () => {
             code
           )) as unknown as UserResponse;
           ("https://corsa-frontend-next.vercel.app/");
-          localStorage.setItem(JSON.stringify(userResponse), "user");
+          localStorage.setItem("user", JSON.stringify(userResponse));
           setUser(userResponse);
         };
         getRegisterResource();
