@@ -22,7 +22,6 @@ export const StravaAuthorization = () => {
     // if (storedToken) setToken(storedToken as string);
 
     const localUser = localStorage.getItem("user");
-    console.log(user, "<< user");
     if (localUser) {
       console.log(localUser, "<< localUser");
       // user is in local storage
@@ -50,6 +49,7 @@ export const StravaAuthorization = () => {
           const userResponse = (await stravaRegister(
             code
           )) as unknown as UserResponse;
+          ("https://corsa-frontend-next.vercel.app/");
           localStorage.setItem(JSON.stringify(userResponse), "user");
           setUser(userResponse);
         };
