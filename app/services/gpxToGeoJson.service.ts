@@ -1,7 +1,7 @@
 export const gpxToGeoJsonString = async (gpx: string) => {
   try {
     const result = await fetch(
-      "https://xnu0gs14wl.execute-api.us-east-1.amazonaws.com/prod/gpx-geojson",
+      "https://dr4vf0yztc.execute-api.us-east-1.amazonaws.com/prod/gpx-geojson",
       {
         method: "POST",
         headers: {

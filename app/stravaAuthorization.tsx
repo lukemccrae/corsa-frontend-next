@@ -7,6 +7,7 @@ import {
 } from "./services/stravaAuth.service";
 import { Profile } from "./profile";
 import { User } from "./types";
+import { LoadingSpinner } from "./spinner";
 const connectwithstrava = "/btn_strava_connectwith_light.png";
 
 const redirectToStrava = () => {
@@ -16,12 +17,14 @@ const redirectToStrava = () => {
 
 export const StravaAuthorization = () => {
   const [user, setUser] = useState<User>();
-  // const [token, setToken] = useState<string>();
+  const [loading, setLoading] = useState<Boolean>(false);
+
   useEffect(() => {
     // const storedToken = localStorage.getItem("access_token");
     // if (storedToken) setToken(storedToken as string);
 
     const localUser = localStorage.getItem("user");
+    if (localUser) setLoading(true);
     if (localUser) {
       console.log(localUser, "<< localUser");
       // user is in local storage
@@ -58,52 +61,6 @@ export const StravaAuthorization = () => {
         // they need to click the button
       }
     }
-
-    // three cases
-    // if (token && !user) {
-    //   console.log(storedToken, "<< storedToken");
-    //   // token, no user
-    //   const decodedUser = jwtDecode(token as string) as User;
-
-    //   // //if token is expired remove it
-    //   if (Date.now() / 1000 > decodedUser.expires_at) {
-    //     localStorage.removeItem("access_token");
-    //     setToken("");
-    //   }
-
-    //   console.log(decodedUser, "<< decodedUser");
-    //   setUser(decodedUser as User);
-    //   // if (user) {
-    //   // token, user
-    //   // do nothing
-    //   // }
-    //   console.log(decodedUser, "<< decodedUser");
-    // } else {
-    //   // no token, no user
-    //   const getCodeFromURL = () => {
-    //     const urlParams = new URLSearchParams(window.location.search);
-    //     return urlParams.get("code");
-    //   };
-    //   const code = getCodeFromURL();
-    //   console.log(code, "<< code");
-    //   if (code) {
-    //     const getResource = async () => {
-    //       const resource = (await stravaAuth(code)) as unknown as TokenResponse;
-    //       console.log(resource, "<< resource");
-    //       setToken(resource.access_token);
-    //     };
-    //     getResource();
-    //   }
-    //   // if (code) {
-    //   //   console.log(code, "<< code");
-    //   //   if (window && document) {
-    //   //     window.history.replaceState({}, document.title, "/");
-
-    //   //     console.log(resource, "resource");
-    //   //     localStorage.setItem("acess_token", resource.access_token);
-    //   //   }
-    //   // }
-    // }
   }, []);
 
   return (

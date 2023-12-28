@@ -75,6 +75,8 @@ export const CreatePlan = (props: CreatePlanProps) => {
       <DatePick
         getActivitiesFromDate={getActivitiesFromDate}
         userId={props.user}
+        setCreatePlanOpen={props.setCreatePlanOpen}
+        setPlans={props.setPlans}
       ></DatePick>
 
       {activities.map((act) => {

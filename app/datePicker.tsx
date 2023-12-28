@@ -3,21 +3,36 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { createPlanFromGeoJson } from "./services/createPlan.service";
 import { gpxToGeoJsonString } from "./services/gpxToGeoJson.service";
+import { LoadingSpinner } from "./spinner";
+import { fetchPlans } from "./services/fetchPlans.service";
 
 interface DatePickProps {
   getActivitiesFromDate: Function;
   userId: number;
+  setCreatePlanOpen: Function;
+  setPlans: Function;
 }
 
 export const DatePick = (props: DatePickProps) => {
   const [gpxData, setGpxData] = useState("");
+  const [loading, setLoading] = useState<Boolean>(false);
+  const [error, setError] = useState<Boolean>(false);
 
   const handleAddButtonClick = async () => {
-    const geoJsonString = await gpxToGeoJsonString(gpxData);
-    console.log(geoJsonString, "<< geoJsonString");
-    if (typeof geoJsonString !== "string")
-      throw new Error("translating gpx to geoJson has failed");
-    await createPlanFromGeoJson(geoJsonString, String(props.userId));
+    setLoading(true);
+    try {
+      const geoJsonString = await gpxToGeoJsonString(gpxData);
+      if (typeof geoJsonString !== "string")
+        throw new Error("translating gpx to geoJson has failed");
+      await createPlanFromGeoJson(geoJsonString, String(props.userId));
+      const userId = props.userId;
+      const setPlans = props.setPlans;
+      fetchPlans({ userId, setPlans });
+      props.setCreatePlanOpen();
+    } catch (e) {
+      setError(true);
+      setLoading(false);
+    }
   };
 
   return (
@@ -34,16 +49,24 @@ export const DatePick = (props: DatePickProps) => {
           style={{ color: "black" }}
         ></textarea>
       </div>
-      <button
-        style={{
-          margin: "5px 20px 5px 5px",
-          border: "1px solid white",
-          padding: "3px",
-        }}
-        onClick={handleAddButtonClick}
-      >
-        Add
-      </button>
+      {loading ? (
+        <LoadingSpinner></LoadingSpinner>
+      ) : (
+        <button
+          style={{
+            margin: "5px 20px 5px 5px",
+            border: "1px solid white",
+            padding: "3px",
+          }}
+          onClick={handleAddButtonClick}
+        >
+          Add
+        </button>
+      )}
+      <div style={{ display: error ? "flex" : "none" }}>
+        There was an error processing this GPX file. Files must contain both
+        elevation and timestamp information.{" "}
+      </div>
     </div>
   );
 };
