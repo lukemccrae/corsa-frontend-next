@@ -5,9 +5,23 @@ import { PlanView } from "./planView";
 import { CreatePlan } from "./CreatePlan";
 
 const PageContainer = styled.div`
-  background-color: grey;
-  margin: 20px 20vw; /* Adjust margin as needed */
-  padding: 20px;
+  @media (min-width: 1047px) {
+    background-color: grey;
+    margin: 20px 20vw; /* Adjust margin as needed */
+    padding: 20px;
+  }
+
+  /* Media query for screens between 769px and 1024px */
+  @media (min-width: 631px) and (max-width: 1046px) {
+    background-color: grey;
+    padding: 20px;
+  }
+
+  /* Media query for screens between 769px and 1024px */
+  @media (max-width: 630px) {
+    background-color: grey;
+    font-size: 0.8em;
+  }
 `;
 
 const Heading = styled.h1`
@@ -16,6 +30,7 @@ const Heading = styled.h1`
   display: flex;
   justify-content: space-between;
   margin-right: 20px;
+  padding: 0 0 0 20px;
 `;
 
 const ListContainer = styled.div`

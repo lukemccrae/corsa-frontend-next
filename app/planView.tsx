@@ -21,6 +21,11 @@ export const PlanContainer = styled.div`
   padding: 10px;
   margin: 10px;
   flex-wrap: wrap;
+
+  @media (max-width: 630px) {
+    padding: 3px;
+    margin: 3px;
+  }
 `;
 
 const Avatar = styled.div`
@@ -59,15 +64,25 @@ export const PlanContentItem = styled.li`
   margin-left: 0;
   margin-right: 16px;
   padding-right: 16px;
+
+  @media (max-width: 630px) {
+    padding-right: 3px;
+    margin-right: 3px;
+  }
 `;
 
 export const PlanContentItemNoBorder = styled.li`
   margin-left: 0;
   margin-right: 16px;
   padding-right: 16px;
+
+  @media (max-width: 630px) {
+    padding-right: 3px;
+    margin-right: 3px;
+  }
 `;
 
-const PlanTitle = styled.h1`
+const PlanTitle = styled.h5`
   margin: 0;
   font-size: 24px;
 `;
@@ -93,6 +108,11 @@ const Map = styled.div`
   border: 1px solid #ccc;
   padding: 10px;
   margin: 10px;
+
+  @media (max-width: 630px) {
+    margin: 4px;
+    padding: 4px;
+  }
 `;
 export const Item = styled.div`
   display: flex;
@@ -104,6 +124,10 @@ export const Detail = styled.div`
   font-size: 20px;
   line-height: 25px;
   white-space: nowrap;
+
+  @media (max-width: 630px) {
+    font-size: 14px;
+  }
 `;
 
 interface PlanViewProps {

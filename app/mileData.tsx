@@ -38,6 +38,27 @@ const DataTable = styled.div`
 
 const MileTableHead = styled.th`
   text-align: left;
+  font-size: 12px;
+`;
+
+const MileTableHeadGainLoss = styled.th`
+  text-align: left;
+  font-size: 12px;
+  width: auto;
+
+  @media (max-width: 630px) {
+    width: 30px;
+  }
+`;
+
+const MileTableHeadAvg = styled.th`
+  text-align: left;
+  font-size: 12px;
+  width: auto;
+
+  @media (max-width: 630px) {
+    width: 45px;
+  }
 `;
 
 export const TableData = styled.td`
@@ -97,63 +118,69 @@ export const MileDataTable = (props: MileDataProps) => {
   }, []);
 
   return (
-    <table
-      style={{
-        tableLayout: "fixed",
-        width: "250px",
-        margin: "30px auto 30px auto",
-      }}
-    >
-      <thead>
-        <tr>
-          <MileTableHead style={{ width: "50px" }}>Mile</MileTableHead>
-          <MileTableHead style={{ width: "90px" }}>Time</MileTableHead>
-          <MileTableHead style={{ width: "80px" }}>Profile</MileTableHead>
-          <MileTableHead style={{ width: "70px" }}>Avg.</MileTableHead>
-          <MileTableHead style={{ width: "50px" }}>Gain</MileTableHead>
-          <MileTableHead style={{ width: "70px" }}>Loss</MileTableHead>
-          {/* TODO: make start time editable */}
-          <MileTableHead style={{ width: "70px" }}>Elapsed</MileTableHead>
-        </tr>
-      </thead>
-      <tbody>
-        {props.plan.mileData.map((m, i) => {
-          return (
-            <MileBox key={i}>
-              <TableData>
-                {i === props.plan.mileData.length - 1
-                  ? props.lastMileDistance
-                  : i + 1}
-              </TableData>
-              <TableData>
-                <ArrowLeft
-                  onClick={() => props.adjustPace(props.plan.id, -5, i)}
-                ></ArrowLeft>
-                {toHHMMSS(m.pace)}
-                <ArrowRight
-                  onClick={() => props.adjustPace(props.plan.id, 5, i)}
-                ></ArrowRight>
-              </TableData>
-              <TableData>
-                {profile && profile[i] ? (
-                  <MileProfile profile={profile[i]}></MileProfile>
-                ) : (
-                  <div></div>
-                )}
-              </TableData>
-              <TableData>
-                {averagePaces(props.plan.mileData.slice(0, i + 1))}
-              </TableData>
-              <TableData>{m.elevationGain}</TableData>
-              <TableData>{m.elevationLoss}</TableData>
-              {/* TODO: make start time editable */}
-              <TableData>
-                {calcTime(props.plan.mileData.slice(0, i + 1), props.startTime)}
-              </TableData>
-            </MileBox>
-          );
-        })}
-      </tbody>
-    </table>
+    <div style={{ maxWidth: "100%", overflowX: "auto" }}>
+      <table
+        style={{
+          tableLayout: "fixed",
+          width: "100%",
+          maxWidth: "100%",
+          margin: "auto",
+          borderCollapse: "collapse",
+        }}
+      >
+        <thead>
+          <tr>
+            <MileTableHead style={{ width: "33px" }}>Mile</MileTableHead>
+            <MileTableHead>Time</MileTableHead>
+            <MileTableHead>Profile</MileTableHead>
+            <MileTableHeadAvg>Avg.</MileTableHeadAvg>
+            <MileTableHeadGainLoss>Gain</MileTableHeadGainLoss>
+            <MileTableHeadGainLoss>Loss</MileTableHeadGainLoss>
+            <MileTableHead>Elapsed</MileTableHead>
+          </tr>
+        </thead>
+        <tbody>
+          {props.plan.mileData.map((m, i) => {
+            return (
+              <MileBox key={i}>
+                <TableData>
+                  {i === props.plan.mileData.length - 1
+                    ? props.lastMileDistance
+                    : i + 1}
+                </TableData>
+                <TableData>
+                  <ArrowLeft
+                    onClick={() => props.adjustPace(props.plan.id, -5, i)}
+                  ></ArrowLeft>
+                  {toHHMMSS(m.pace)}
+                  <ArrowRight
+                    onClick={() => props.adjustPace(props.plan.id, 5, i)}
+                  ></ArrowRight>
+                </TableData>
+                <TableData>
+                  {profile && profile[i] ? (
+                    <MileProfile profile={profile[i]}></MileProfile>
+                  ) : (
+                    <div></div>
+                  )}
+                </TableData>
+                <TableData>
+                  {averagePaces(props.plan.mileData.slice(0, i + 1))}
+                </TableData>
+                <TableData>{m.elevationGain}</TableData>
+                <TableData>{m.elevationLoss}</TableData>
+                {/* TODO: make start time editable */}
+                <TableData>
+                  {calcTime(
+                    props.plan.mileData.slice(0, i + 1),
+                    props.startTime
+                  )}
+                </TableData>
+              </MileBox>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 };

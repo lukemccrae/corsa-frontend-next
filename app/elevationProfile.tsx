@@ -1,5 +1,6 @@
 import { Line } from "react-chartjs-2";
 import styled from "styled-components";
+import { useEffect } from "react";
 
 import {
   Chart as ChartJS,
@@ -33,10 +34,19 @@ const ChartWrapper = styled.div`
   padding: 10px;
   margin: 10px;
   width: 100%;
+  max-width: 100%;
   height: 300px;
 `;
 
 export const ElevationProfile = (props: ElevationProfileProps) => {
+  useEffect(() => {
+    const canvasElement = document.querySelector("canvas"); // Selects the first canvas element
+
+    if (canvasElement) {
+      canvasElement.style.maxWidth = "100%";
+      canvasElement.style.height = "auto";
+    }
+  }, []);
   if (!props.chartProfilePoints) {
     return <div>Loading</div>;
   }

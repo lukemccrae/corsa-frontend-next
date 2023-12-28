@@ -12,6 +12,11 @@ const Point = styled.div`
   height: 1px;
   margin-right: 2px;
   background-color: white;
+
+  /* Media query for screens between 769px and 1024px */
+  @media (max-width: 630px) {
+    margin-right: 1px;
+  }
 `;
 
 type MileVertProfile = {
