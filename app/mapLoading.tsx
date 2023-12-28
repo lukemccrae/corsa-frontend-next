@@ -26,7 +26,7 @@ export const MapLoading = (props: MapLoadingProps) => {
     fetchGeoJson({ planId, setGeoJson, setAlert, setLastMileLength }).finally(
       () => setLoading(false)
     );
-  });
+  }, []);
   if (loading) {
     return <div>loading...</div>;
   } else {

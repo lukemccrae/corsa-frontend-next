@@ -15,8 +15,8 @@ export const createPlanFromGeoJson = async (
 
   try {
     const response = await fetch(
-      "http://localhost:8008/graphql",
-      // "https://pannrqk3p5hdhkg2ys3k4jevdu.appsync-api.us-east-1.amazonaws.com/graphql",
+      // "http://localhost:8008/graphql",
+      "https://trbethutebbqlkwv7nogfcdaka.appsync-api.us-east-1.amazonaws.com/graphql",
       {
         method: "POST",
         headers: {
@@ -62,7 +62,7 @@ export const createPlanFromActivity = async (
 
   try {
     const response = await fetch(
-      "https://pannrqk3p5hdhkg2ys3k4jevdu.appsync-api.us-east-1.amazonaws.com/graphql",
+      "https://trbethutebbqlkwv7nogfcdaka.appsync-api.us-east-1.amazonaws.com/graphql",
       {
         method: "POST",
         headers: {

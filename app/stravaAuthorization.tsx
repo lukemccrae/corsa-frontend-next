@@ -1,10 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import { TokenResponse, stravaAuth } from "./services/stravaAuth.service";
+import {
+  UserResponse,
+  stravaRegister,
+  stravaUserDetails,
+} from "./services/stravaAuth.service";
 import { Profile } from "./profile";
-import { GetPlansByUserId, User } from "./types";
-import jwtDecode from "jwt-decode";
-import { useLocation } from "react-router-dom";
+import { User } from "./types";
 const connectwithstrava = "/btn_strava_connectwith_light.png";
 
 const redirectToStrava = () => {
@@ -14,61 +16,98 @@ const redirectToStrava = () => {
 
 export const StravaAuthorization = () => {
   const [user, setUser] = useState<User>();
-  const [token, setToken] = useState<string>();
+  // const [token, setToken] = useState<string>();
   useEffect(() => {
-    const storedToken = localStorage.getItem("access_token");
-    if (storedToken) setToken(storedToken as string);
+    // const storedToken = localStorage.getItem("access_token");
+    // if (storedToken) setToken(storedToken as string);
 
-    // three cases
-    if (token && !user) {
-      console.log(storedToken, "<< storedToken");
-      // token, no user
-      const decodedUser = jwtDecode(token as string) as User;
-
-      // //if token is expired remove it
-      if (Date.now() / 1000 > decodedUser.expires_at) {
-        localStorage.removeItem("access_token");
-        setToken("");
-      }
-
-      console.log(decodedUser, "<< decodedUser");
-      setUser(decodedUser as User);
-      // if (user) {
-      // token, user
-      // do nothing
-      // }
-      console.log(decodedUser, "<< decodedUser");
+    const localUser = localStorage.getItem("user");
+    console.log(user, "<< user");
+    if (localUser) {
+      console.log(localUser, "<< localUser");
+      // user is in local storage
+      const parsedUser = JSON.parse(localUser);
+      const getUserResource = async () => {
+        const userResponse = (await stravaUserDetails(
+          parsedUser.access_token,
+          parsedUser.userId
+        )) as unknown as UserResponse;
+        console.log(userResponse, "<< userResponse");
+        localStorage.setItem(JSON.stringify(userResponse), "user");
+        setUser(userResponse);
+      };
+      getUserResource();
     } else {
-      // no token, no user
+      // user is not in local storage
       const getCodeFromURL = () => {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get("code");
       };
       const code = getCodeFromURL();
-      console.log(code, "<< code");
       if (code) {
-        const getResource = async () => {
-          const resource = (await stravaAuth(code)) as unknown as TokenResponse;
-          console.log(resource, "<< resource");
-          setToken(resource.access_token);
+        // they clicked the button
+        const getRegisterResource = async () => {
+          const userResponse = (await stravaRegister(
+            code
+          )) as unknown as UserResponse;
+          localStorage.set(JSON.stringify(userResponse), "user");
         };
-        getResource();
+        getRegisterResource();
+      } else {
+        // they need to click the button
       }
-      // if (code) {
-      //   console.log(code, "<< code");
-      //   if (window && document) {
-      //     window.history.replaceState({}, document.title, "/");
-
-      //     console.log(resource, "resource");
-      //     localStorage.setItem("acess_token", resource.access_token);
-      //   }
-      // }
     }
-  }, [token]);
+
+    // three cases
+    // if (token && !user) {
+    //   console.log(storedToken, "<< storedToken");
+    //   // token, no user
+    //   const decodedUser = jwtDecode(token as string) as User;
+
+    //   // //if token is expired remove it
+    //   if (Date.now() / 1000 > decodedUser.expires_at) {
+    //     localStorage.removeItem("access_token");
+    //     setToken("");
+    //   }
+
+    //   console.log(decodedUser, "<< decodedUser");
+    //   setUser(decodedUser as User);
+    //   // if (user) {
+    //   // token, user
+    //   // do nothing
+    //   // }
+    //   console.log(decodedUser, "<< decodedUser");
+    // } else {
+    //   // no token, no user
+    //   const getCodeFromURL = () => {
+    //     const urlParams = new URLSearchParams(window.location.search);
+    //     return urlParams.get("code");
+    //   };
+    //   const code = getCodeFromURL();
+    //   console.log(code, "<< code");
+    //   if (code) {
+    //     const getResource = async () => {
+    //       const resource = (await stravaAuth(code)) as unknown as TokenResponse;
+    //       console.log(resource, "<< resource");
+    //       setToken(resource.access_token);
+    //     };
+    //     getResource();
+    //   }
+    //   // if (code) {
+    //   //   console.log(code, "<< code");
+    //   //   if (window && document) {
+    //   //     window.history.replaceState({}, document.title, "/");
+
+    //   //     console.log(resource, "resource");
+    //   //     localStorage.setItem("acess_token", resource.access_token);
+    //   //   }
+    //   // }
+    // }
+  }, []);
 
   return (
     <div>
-      {user && user.athlete ? (
+      {user ? (
         <Profile user={user}></Profile>
       ) : (
         <button

@@ -26,23 +26,18 @@ export const Profile = (props: ProfileProps) => {
   };
 
   useEffect(() => {
-    console.log("profile,  '<< profile");
-    const userId = props.user.athlete.id;
+    const userId = props.user.userId;
     fetchPlans({ userId, setPlans });
-  }, [props.user.athlete.id]);
+  }, [props.user.userId]);
 
   return (
     <div>
-      <StatusBar
-        picture={props.user.athlete.profile}
-        first={props.user.athlete.firstname}
-        last={props.user.athlete.lastname}
-      ></StatusBar>
+      <StatusBar profile={props.user.profile}></StatusBar>
       {plans ? (
         <Plans
           plans={plans}
           adjustPace={adjustPace}
-          user={props.user.athlete.id}
+          user={props.user.userId}
           token={props.user.access_token}
           setPlans={setPlans}
         ></Plans>

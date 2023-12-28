@@ -17,7 +17,7 @@ export const updatePlan = async (plan: Plan) => {
 
   try {
     const result = await fetch(
-      "https://pannrqk3p5hdhkg2ys3k4jevdu.appsync-api.us-east-1.amazonaws.com/graphql",
+      "https://trbethutebbqlkwv7nogfcdaka.appsync-api.us-east-1.amazonaws.com/graphql",
       {
         method: "POST",
         headers: {

@@ -20,7 +20,7 @@ export const deletePlanAndS3Data = async (
 
   try {
     const request = await fetch(
-      "https://pannrqk3p5hdhkg2ys3k4jevdu.appsync-api.us-east-1.amazonaws.com/graphql",
+      "https://trbethutebbqlkwv7nogfcdaka.appsync-api.us-east-1.amazonaws.com/graphql",
       {
         method: "POST",
         headers: {

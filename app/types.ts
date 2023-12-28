@@ -22,13 +22,10 @@ export interface Athlete {
 }
 
 export interface User {
-  token_type: string;
+  userId: number;
   expires_at: number;
-  expires_in: number;
-  refresh_token: string;
   access_token: string;
-  athlete: Athlete;
-  iat: number;
+  profile: string;
 }
 
 export type Plan = {
