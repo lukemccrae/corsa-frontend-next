@@ -51,6 +51,7 @@ export const StravaAuthorization = () => {
             code
           )) as unknown as UserResponse;
           localStorage.setItem(JSON.stringify(userResponse), "user");
+          setUser(userResponse);
         };
         getRegisterResource();
       } else {
