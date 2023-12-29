@@ -8,7 +8,7 @@ import { fetchPlans } from "./services/fetchPlans.service";
 
 interface DatePickProps {
   getActivitiesFromDate: Function;
-  userId: number;
+  userId: string;
   setCreatePlanOpen: Function;
   setPlans: Function;
 }

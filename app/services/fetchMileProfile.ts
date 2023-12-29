@@ -2,7 +2,7 @@ import { FeatureCollection, GraphQLFeatureCollection } from "../types";
 import { Alert } from "../alert";
 
 interface FetchMileProfileProps {
-  user: number;
+  user: string;
   setProfile: Function;
   planIndex: number;
 }

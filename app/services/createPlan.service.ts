@@ -39,8 +39,7 @@ export const createPlanFromGeoJson = async (
 export const createPlanFromActivity = async (
   activityId: string,
   planName: string,
-  token: string,
-  userId: number,
+  userId: string,
   setCreatePlanOpen: Function,
   setPlans: Function,
   setPlanCreating: Function,
@@ -52,7 +51,6 @@ export const createPlanFromActivity = async (
     createPlanFromActivity(
         activityId: ${activityId},
         planName: "${planName}",
-        token: "${token}",
         userId: "${userId}"
     ) {
       success

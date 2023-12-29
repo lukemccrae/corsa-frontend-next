@@ -1,7 +1,7 @@
 import { GetPlansByUserId } from "../types";
 
 interface FetchPlanProps {
-  userId: number;
+  userId: string;
   setPlans: Function;
 }
 

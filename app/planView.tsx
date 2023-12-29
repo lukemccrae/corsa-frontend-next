@@ -138,7 +138,7 @@ interface PlanViewProps {
   setExpandedItem: Function;
   expandedItem: string;
   id: string;
-  user: number;
+  user: string;
   planIndex: number;
   setPlans: Function;
 }

@@ -100,7 +100,7 @@ export const calcTime = (md: MileData[], start: number) => {
 
 interface MileDataProps {
   mileProfilePoints: number[][];
-  user: number;
+  user: string;
   startTime: number;
   plan: Plan;
   adjustPace: Function;
