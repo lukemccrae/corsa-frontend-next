@@ -5,8 +5,7 @@ export const fetchActivities = async (
   dateTo: number,
   limit: number,
   offset: number,
-  token: string,
-  userId: number,
+  userId: string,
   setActivities: Function
 ) => {
   const query = `
@@ -16,7 +15,6 @@ export const fetchActivities = async (
             dateTo: ${dateTo},
             limit: ${limit},
             offset: ${offset},
-            token: "${token}",
             userId: "${userId}") {
                 distance
                 id

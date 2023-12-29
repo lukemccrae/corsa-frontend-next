@@ -26,7 +26,6 @@ export const deletePlanAndS3Data = async (
         headers: {
           "Content-Type": "application/json",
           "x-api-key": `${process.env.NEXT_PUBLIC_X_API_KEY}`,
-          // Authorization: `Bearer ${JSON.stringify(token)}`,
         },
         body: JSON.stringify({ query }),
       }

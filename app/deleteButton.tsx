@@ -4,7 +4,7 @@ import { Plan } from "./types";
 import { styled } from "styled-components";
 
 interface DeleteButtonProps {
-  userId: number;
+  userId: string;
   bucketKey: string;
   plans: Plan[];
   setPlans: Function;

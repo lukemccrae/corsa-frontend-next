@@ -38,7 +38,6 @@ export const Profile = (props: ProfileProps) => {
           plans={plans}
           adjustPace={adjustPace}
           user={props.user.userId}
-          token={props.user.access_token}
           setPlans={setPlans}
         ></Plans>
       ) : (

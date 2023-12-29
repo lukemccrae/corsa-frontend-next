@@ -38,10 +38,9 @@ const ListContainer = styled.div`
 `;
 
 interface PlanProps {
-  user: number;
+  user: string;
   adjustPace: Function;
   plans: Plan[];
-  token: string;
   setPlans: Function;
 }
 
@@ -64,7 +63,6 @@ function UserPlans(props: PlanProps) {
         </Heading>
         {createPlanOpen ? (
           <CreatePlan
-            token={props.token}
             user={props.user}
             setCreatePlanOpen={setCreatePlanOpen}
             setPlans={props.setPlans}

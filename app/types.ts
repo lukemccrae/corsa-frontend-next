@@ -22,9 +22,8 @@ export interface Athlete {
 }
 
 export interface User {
-  userId: number;
+  userId: string;
   expires_at: number;
-  access_token: string;
   profile: string;
 }
 
