@@ -28,7 +28,7 @@ export const StatusBar = (props: StatusBarProps) => {
       <h1
         style={{ fontWeight: "bold", fontSize: "24px", padding: "0 10px 0 0" }}
       >
-        CORSA
+        CORSAAAAAA
       </h1>
       <div style={{ display: "flex", alignItems: "baseline" }}>
         <ProfilePicture src={props.profile} alt="Profile Picture" />
