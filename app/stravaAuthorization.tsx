@@ -30,15 +30,6 @@ export const StravaAuthorization = () => {
       };
       getUserResource();
     }
-    // if (localUser) {
-    // // user is in local storage
-    // const parsedUser = JSON.parse(localUser);
-
-    //   console.log(userResponse, "<< userResponse");
-    //   localStorage.setItem("user", JSON.stringify(userResponse));
-    //   setUser(userResponse);
-    // };
-    // } else {
 
     // user is not in local storage
     const getCodeFromURL = () => {
